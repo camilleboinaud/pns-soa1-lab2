@@ -1,7 +1,9 @@
 package fr.unice.polytech.si5.soa1.lab2.flows.business;
 
 
-public class OrderItem {
+import java.io.Serializable;
+
+public class OrderItem implements Serializable {
     public Manufacturer getManufacturer() {
         return manufacturer;
     }
@@ -20,4 +22,12 @@ public class OrderItem {
 
     private Manufacturer manufacturer;
     private int manufacturerId;
+
+    @Override
+    public String toString() {
+        return "OrderItem {" +
+                "manufacturer='" + manufacturer + '\'' +
+                ", manufacturerId='" + manufacturerId + '\'' +
+                '}';
+    }
 }

@@ -1,10 +1,13 @@
 package fr.unice.polytech.si5.soa1.lab2.flows.business;
 
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class Order {
-    private List <OrderItem> items;
+public class Order implements Serializable {
+
+    private ArrayList<OrderItem> items;
     private String address;
     private String email;
     private String name;
@@ -25,7 +28,6 @@ public class Order {
         this.name = name;
     }
 
-
     public String getAddress() {
         return address;
     }
@@ -38,8 +40,18 @@ public class Order {
         return items;
     }
 
-    public void setItems(List<OrderItem> items) {
+    public void setItems(ArrayList<OrderItem> items) {
         this.items = items;
+    }
+
+    @Override
+    public String toString() {
+        return "Order {" +
+                "address='" + address + '\'' +
+                ", email='" + email + '\'' +
+                ", name='" + name + '\'' +
+                ", items=" + items + '\'' +
+                '}';
     }
 
 }

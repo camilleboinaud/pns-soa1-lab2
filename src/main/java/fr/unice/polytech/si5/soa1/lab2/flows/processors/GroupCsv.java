@@ -33,26 +33,5 @@ public class GroupCsv implements Processor {
         }
 
         return orders.values();
-
-            /* Keep example until data classes are implemented
-
-            // name
-            String name =  (String) data.get("Navn");
-            o.setFirstName((name.split(",")[1].trim()));
-            o.setLastName((name.split(",")[0].trim()));
-            // zip code
-            o.setZipCode(Integer.parseInt((String) data.get("Postnummer")));
-            // address
-            o.setAddress((String) data.get("Postaddressen"));
-            // email
-            o.setEmail((String) data.get("Epost"));
-            // Unique identifier
-            o.setUid((String) data.get("Fodselsnummer"));
-            // Money
-            o.setIncome(getMoneyValue(data, "Inntekt"));
-            o.setAssets(getMoneyValue(data, "Formue"));
-            */
-
-        //return o;
     }
 }

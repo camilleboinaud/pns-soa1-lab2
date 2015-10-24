@@ -32,8 +32,8 @@ public class HandleCSVFile extends RouteBuilder {
                 .split(body())
                 .log("  Transforming a CSV lines into Order")
                 .process(csv2order)
-                .log("  finished...")
-                //.to(HANDLE_ORDER)   // Async transfer with JMS ( activemq:... )
+                .log("Got order of ${body}")
+                .to(HANDLE_FULL_ORDER)
         ;
     }
 

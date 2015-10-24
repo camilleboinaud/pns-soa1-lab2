@@ -6,7 +6,10 @@ public class Endpoints {
 
     public static final String CSV_OUTPUT_DIRECTORY = "file:camel/output";
 
-    public static final String HANDLE_ORDER = "activemq:handleOrder";
+    public static final String HANDLE_FULL_ORDER = "activemq:handleOrder";
+
+    public static final String HANDLE_MINIBO_ORDER = "activemq:handleMiniboOrder";
+    public static final String HANDLE_MAXIMEUBLE_ORDER = "activemq:handleMaxiMeubleOrder";
 
     public static final String GEN_SERVICE = "http://localhost:8181";
 

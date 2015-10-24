@@ -39,7 +39,7 @@ public class Csv2Order implements Processor {
             }
 
             if (order.getName() == null && name != null) {
-                order.setEmail(email);
+                order.setName(name);
             }
 
             OrderItem orderItem = new OrderItem();
