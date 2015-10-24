@@ -1,0 +1,5 @@
+name,email,address,manufacturer,itemid
+hello,mail@mail.mail,superaddress,MINIBO,1
+hello,mail@mail.mail,superaddress,MAXIMEUBLE,2
+bye,bye@mail.mail,superduperaddress,MINIBO,2
+bye,bye@mail.mail,superduperaddress,MAXIMEUBLE,1
