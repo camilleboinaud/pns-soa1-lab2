@@ -1,1 +1,10 @@
 language: java
+notifications:
+  email:
+    recipients:
+      - camille.boinaud@gmail.com
+      - zjsth92@gmail.com
+      - mounirguizani91@gmail.com
+      - lecapeter@gmail.com
+    on_success: change
+    on_failure: always
