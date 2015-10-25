@@ -2,6 +2,8 @@ package fr.unice.polytech.si5.soa1.lab2.flows.business;
 
 
 public class CsvOrderItem {
+
+
     private String address;
 
     //TODO More fields

@@ -3,6 +3,7 @@ package fr.unice.polytech.si5.soa1.lab2.flows.processors;
 import fr.unice.polytech.si5.soa1.lab2.flows.business.Manufacturer;
 import fr.unice.polytech.si5.soa1.lab2.flows.business.Order;
 import fr.unice.polytech.si5.soa1.lab2.flows.business.OrderItem;
+import fr.unice.polytech.si5.soa1.lab2.flows.utils.Pair;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 
@@ -23,18 +24,18 @@ public class SubOrders implements Processor {
     private Collection <Order> builder (Order order) {
         Map <Manufacturer, Order> suborders = new HashMap<Manufacturer, Order>();
 
-        for (OrderItem item : order.getItems()) {
-            if (!suborders.containsKey(item.getManufacturer())) {
+        for (Pair<OrderItem, Integer> item : order.getItems()) {
+            if (!suborders.containsKey(item.getLeft().getManufacturer())) {
                 Order subOrder = new Order();
                 subOrder.setName(order.getName());
                 subOrder.setEmail(order.getEmail());
                 subOrder.setAddress(order.getAddress());
-                subOrder.setItems(new ArrayList<OrderItem>());
+                subOrder.setItems(new ArrayList<Pair<OrderItem, Integer>>());
 
-                suborders.put(item.getManufacturer(), subOrder);
+                suborders.put(item.getLeft().getManufacturer(), subOrder);
             }
 
-            suborders.get(item.getManufacturer()).getItems().add(item);
+            suborders.get(item.getLeft().getManufacturer()).getItems().add(item);
         }
 
         return suborders.values();

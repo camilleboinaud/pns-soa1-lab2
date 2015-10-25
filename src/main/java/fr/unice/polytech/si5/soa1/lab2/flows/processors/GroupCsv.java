@@ -1,6 +1,5 @@
 package fr.unice.polytech.si5.soa1.lab2.flows.processors;
 
-import fr.unice.polytech.si5.soa1.lab2.flows.business.Order;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 
@@ -8,6 +7,7 @@ import java.util.*;
 
 
 public class GroupCsv implements Processor {
+
     public void process(Exchange exchange) throws Exception {
         // retrieving the body of the exchanged message
         List <Map<String, String> > input = (List <Map<String, String> >) exchange.getIn().getBody();
