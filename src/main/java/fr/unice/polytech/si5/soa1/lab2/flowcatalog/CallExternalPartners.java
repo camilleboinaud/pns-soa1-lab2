@@ -3,7 +3,7 @@ package fr.unice.polytech.si5.soa1.lab2.flowcatalog;
 import fr.unice.polytech.si5.soa1.lab2.flowcatalog.business.Item;
 import fr.unice.polytech.si5.soa1.lab2.flowcatalog.utils.RequestBuilder;
 import fr.unice.polytech.si5.soa1.lab2.flows.business.Manufacturer;
-import javafx.util.Pair;
+import fr.unice.polytech.si5.soa1.lab2.flows.utils.Pair;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
