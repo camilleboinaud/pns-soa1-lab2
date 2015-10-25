@@ -1,9 +1,11 @@
 package fr.unice.polytech.si5.soa1.lab2.flows.utils;
 
+import java.io.Serializable;
+
 /**
  * Created by camille on 25/10/15.
  */
-public class Pair<L,R> {
+public class Pair<L,R> implements Serializable{
 
     protected L left;
     protected R right;

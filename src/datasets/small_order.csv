@@ -1,5 +1,5 @@
-name,email,address,manufacturer,itemid, quantity
-hello,mail@mail.mail,superaddress,MINIBO,1, 12
-hello,mail@mail.mail,superaddress,MAXIMEUBLE,2, 2
-bye,bye@mail.mail,superduperaddress,MINIBO,2, 30
-bye,bye@mail.mail,superduperaddress,MAXIMEUBLE,1, 12
+name,email,address,manufacturer,itemid,quantity
+hello,mail@mail.mail,superaddress,MINIBO,1,12
+hello,mail@mail.mail,superaddress,MAXIMEUBLE,2,2
+bye,bye@mail.mail,superduperaddress,MINIBO,2,30
+bye,bye@mail.mail,superduperaddress,MAXIMEUBLE,1,12

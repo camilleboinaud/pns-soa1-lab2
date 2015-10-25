@@ -47,7 +47,7 @@ public class Csv2Order implements Processor {
                             Manufacturer.valueOf((item.get("manufacturer"))),
                             Integer.valueOf(item.get("itemid"))
                     ),
-                    Integer.parseInt(item.get("quantity")))
+                    Integer.valueOf(item.get("quantity")))
             );
         }
 
