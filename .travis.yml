@@ -1,0 +1,10 @@
+language: java
+notifications:
+  email:
+    recipients:
+      - camille.boinaud@etu.unice.fr
+      - tianhao.shi@etu.unice.fr
+      - mounir.guizani@etu.unice.fr
+      - pierre.leca@etu.unice.fr
+    on_success: change
+    on_failure: always

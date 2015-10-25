@@ -1,7 +1,7 @@
 package fr.unice.polytech.si5.soa1.lab2.flowcatalog.business;
 
 import fr.unice.polytech.si5.soa1.lab2.flows.business.Manufacturer;
-import javafx.util.Pair;
+import fr.unice.polytech.si5.soa1.lab2.flows.utils.Pair;
 
 import java.io.Serializable;
 
@@ -50,8 +50,8 @@ public class Item implements Serializable {
     public String toString() {
         return "Item {" +
                 ", name='" + name + '\'' +
-                ", manufacturer='" + id.getKey() + '\'' +
-                ", id='" + id.getValue() + '\'' +
+                ", manufacturer='" + id.getLeft() + '\'' +
+                ", id='" + id.getRight() + '\'' +
                 ", description=" + description +
                 ", price=" + price +
                 '}';

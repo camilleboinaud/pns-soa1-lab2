@@ -4,6 +4,7 @@ package fr.unice.polytech.si5.soa1.lab2.flows.processors;
 import fr.unice.polytech.si5.soa1.lab2.flows.business.Manufacturer;
 import fr.unice.polytech.si5.soa1.lab2.flows.business.Order;
 import fr.unice.polytech.si5.soa1.lab2.flows.business.OrderItem;
+import fr.unice.polytech.si5.soa1.lab2.flows.utils.Pair;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 
@@ -23,7 +24,6 @@ public class Csv2Order implements Processor {
     private Order builder(List<Map<String, String> > data) {
 
         Order order = new Order();
-        order.setItems(new ArrayList<OrderItem>());
 
         for (Map <String, String> item : data) {
             String address = item.get("address");
@@ -42,12 +42,13 @@ public class Csv2Order implements Processor {
                 order.setName(name);
             }
 
-            OrderItem orderItem = new OrderItem();
-
-            orderItem.setManufacturer(Manufacturer.valueOf(item.get("manufacturer")));
-            orderItem.setManufacturerId(Integer.valueOf(item.get("itemid")));
-
-            order.getItems().add(orderItem);
+            order.getItems().add(new Pair<OrderItem, Integer>(
+                    new OrderItem(
+                            Manufacturer.valueOf((item.get("manufacturer"))),
+                            Integer.valueOf(item.get("itemid"))
+                    ),
+                    Integer.parseInt(item.get("quantity")))
+            );
         }
 
         return order;
