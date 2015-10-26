@@ -39,6 +39,11 @@ public class Pair<L,R> implements Serializable{
         return result;
     }
 
+    @Override
+    public String toString(){
+        return "<"+getLeft().toString()+" ; "+getRight().toString()+">";
+    }
+
     public L getLeft() {
         return left;
     }

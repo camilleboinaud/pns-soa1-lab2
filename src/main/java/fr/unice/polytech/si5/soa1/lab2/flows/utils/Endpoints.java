@@ -2,6 +2,7 @@ package fr.unice.polytech.si5.soa1.lab2.flows.utils;
 
 
 public class Endpoints {
+
     public static final String GEN_SERVICE = "http://localhost:8181/";
 
     public static final String CSV_INPUT_DIRECTORY = "file:camel/input";
@@ -17,4 +18,5 @@ public class Endpoints {
     public static final String HANDLE_MINIBO_CATALOG_LIST = "direct:handleMiniboCatalogList";
     public static final String HANDLE_MAXIMEUBLE_CATALOG_LIST = "direct:handleMaxiMeubleCatalogList";
     public static final String MINIBO_CATALOG_SERVICE = GEN_SERVICE + "cxf/BusinessManagementService";
+
 }

@@ -10,7 +10,7 @@ import org.apache.camel.Processor;
 import java.util.*;
 
 
-public class SubOrders implements Processor {
+public class FilterOrderByManufacturer implements Processor {
 
     public void process(Exchange exchange) throws Exception {
         // retrieving the body of the exchanged message
@@ -27,14 +27,12 @@ public class SubOrders implements Processor {
         for (Pair<OrderItem, Integer> item : order.getItems()) {
             if (!suborders.containsKey(item.getLeft().getManufacturer())) {
                 Order subOrder = new Order();
-                subOrder.setName(order.getName());
-                subOrder.setEmail(order.getEmail());
-                subOrder.setAddress(order.getAddress());
+
+                subOrder.setCustomer(order.getCustomer());
                 subOrder.setItems(new ArrayList<Pair<OrderItem, Integer>>());
 
                 suborders.put(item.getLeft().getManufacturer(), subOrder);
             }
-
             suborders.get(item.getLeft().getManufacturer()).getItems().add(item);
         }
 

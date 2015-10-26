@@ -2,22 +2,16 @@ package fr.unice.polytech.si5.soa1.lab2.flows;
 
 import static fr.unice.polytech.si5.soa1.lab2.flows.utils.Endpoints.*;
 
-import fr.unice.polytech.si5.soa1.lab2.flows.business.Order;
 import fr.unice.polytech.si5.soa1.lab2.flows.processors.Csv2Order;
-import fr.unice.polytech.si5.soa1.lab2.flows.processors.GroupCsv;
-import org.apache.camel.Exchange;
+import fr.unice.polytech.si5.soa1.lab2.flows.processors.FilterCsvByAddress;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.dataformat.CsvDataFormat;
-import org.apache.camel.processor.aggregate.AggregationStrategy;
-
-import java.util.List;
-import java.util.Map;
 
 
 public class HandleCSVFile extends RouteBuilder {
 
-    private static Processor groupCsv = new GroupCsv();
+    private static Processor groupCsv = new FilterCsvByAddress();
     private static Processor csv2order = new Csv2Order();
 
     @Override

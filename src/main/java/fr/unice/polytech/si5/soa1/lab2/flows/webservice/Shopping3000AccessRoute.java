@@ -12,15 +12,15 @@ public class Shopping3000AccessRoute  extends RouteBuilder {
     public void configure() throws Exception {
 
         // Retrieve a list
-        from("direct:listItem")
+        from("direct:listItems")
                 .log("listItem with ${body}")
                 .to(HANDLE_FULL_CATALOG_LIST)
         ;
 
 
-        from("cxf:/Shopping3000AccessService?serviceClass=fr.unice.polytech.soa1.cookbook.flows.soap.TaxFormAccessService")
+        from("cxf:/Shopping3000AccessService?serviceClass=fr.unice.polytech.si5.soa1.lab2.flows.webservice.Shopping3000AccessService")
                 .filter(simple("${in.headers.operationName} == 'CatalogListAllItem'"))
-                .to("direct:listItem")
+                .to("direct:listItems")
         ;
     }
 }

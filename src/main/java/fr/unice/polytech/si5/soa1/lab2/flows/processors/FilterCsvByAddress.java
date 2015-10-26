@@ -6,7 +6,7 @@ import org.apache.camel.Processor;
 import java.util.*;
 
 
-public class GroupCsv implements Processor {
+public class FilterCsvByAddress implements Processor {
 
     public void process(Exchange exchange) throws Exception {
         // retrieving the body of the exchanged message
