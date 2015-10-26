@@ -2,6 +2,7 @@ package fr.unice.polytech.si5.soa1.lab2.flows.utils;
 
 
 public class Endpoints {
+
     public static final String GEN_SERVICE = "http://localhost:8181/";
 
     public static final String CSV_INPUT_DIRECTORY = "file:camel/input";
@@ -19,5 +20,6 @@ public class Endpoints {
     public static final String MINIBO_CATALOG_SERVICE = GEN_SERVICE + "cxf/BusinessManagementService";
 
     public static final String MAKE_MAXIMEUBLE_ORDERREQUEST = "direct:makeMaximeubleOrderRequest";
+    public static final String MAKE_MAXIMEUBLE_CLIENT = "direct:makeMaximeubleClient";
     public static final String GET_MAXIMEUBLE_PRODUCT = "direct:getMaximeubleProduct";
 }

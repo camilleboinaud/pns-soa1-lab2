@@ -1,5 +1,6 @@
-name,email,address,manufacturer,itemid,quantity
-hello,mail@mail.mail,superaddress,MINIBO,1,12
-hello,mail@mail.mail,superaddress,MAXIMEUBLE,2,2
-bye,bye@mail.mail,superduperaddress,MINIBO,2,30
-bye,bye@mail.mail,superduperaddress,MAXIMEUBLE,1,12
+name,email,address,zipcode,city,creditcard,expiration,csc,manufacturer,itemid,quantity
+hello,mail@mail.mail,superaddress,06060,SuperCity,123456,2015-10-26T18:14:32.014+01:00,123,MINIBO,1,12
+hello,mail@mail.mail,superaddress,06060,SuperCity,123456,2015-10-26T18:14:32.014+01:00,123,MAXIMEUBLE,2,5
+hello,mail@mail.mail,superaddress,06060,SuperCity,123456,2015-10-26T18:14:32.014+01:00,123,MAXIMEUBLE,1,2
+bye,bye@mail.mail,superduperaddress,06060,SuperCity,123456,2015-10-26T18:14:32.014+01:00,123,MINIBO,2,30
+bye,bye@mail.mail,superduperaddress,06060,SuperCity,123456,2015-10-26T18:14:32.014+01:00,123,MAXIMEUBLE,1,12

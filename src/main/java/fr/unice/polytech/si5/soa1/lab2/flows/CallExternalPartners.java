@@ -1,7 +1,7 @@
-package fr.unice.polytech.si5.soa1.lab2.flowcatalog;
+package fr.unice.polytech.si5.soa1.lab2.flows;
 
-import fr.unice.polytech.si5.soa1.lab2.flowcatalog.business.Item;
-import fr.unice.polytech.si5.soa1.lab2.flowcatalog.utils.RequestBuilder;
+import fr.unice.polytech.si5.soa1.lab2.flows.business.CatalogItem;
+import fr.unice.polytech.si5.soa1.lab2.flows.utils.RequestBuilder;
 import fr.unice.polytech.si5.soa1.lab2.flows.business.Manufacturer;
 import fr.unice.polytech.si5.soa1.lab2.flows.utils.Pair;
 import org.apache.camel.Exchange;
@@ -34,7 +34,7 @@ public class CallExternalPartners extends RouteBuilder {
 
         public void process(Exchange exchange) throws Exception {
             Source response = (Source) exchange.getIn().getBody();
-            Item result = new Item();
+            CatalogItem result = new CatalogItem();
             result.setId(new Pair<Manufacturer, Integer>(Manufacturer.MINIBO,Integer.parseInt(xpath.evaluate("//id/text()", response))));
             result.setName(xpath.evaluate("//name/text()", response));
             result.setDescription(xpath.evaluate("//description/text()", response));

@@ -1,13 +1,15 @@
 package fr.unice.polytech.si5.soa1.lab2.flows;
 
 import static fr.unice.polytech.si5.soa1.lab2.flows.utils.Endpoints.*;
-import fr.unice.polytech.si5.soa1.lab2.flows.processors.SubOrders;
+
+import fr.unice.polytech.si5.soa1.lab2.flows.business.Address;
+import fr.unice.polytech.si5.soa1.lab2.flows.processors.FilterOrderByManufacturer;
 import fr.unice.polytech.si5.soa1.lab2.flows.utils.aggregators.ListAggregationStrategy;
 import org.apache.camel.builder.RouteBuilder;
 
 public class HandleFullOrder extends RouteBuilder {
 
-    private static SubOrders subOrderProc = new SubOrders();
+    private static FilterOrderByManufacturer subOrderProc = new FilterOrderByManufacturer();
 
     @Override
     public void configure() throws Exception {
@@ -16,7 +18,7 @@ public class HandleFullOrder extends RouteBuilder {
                 .log("partitionning order by manufacturer")
                 .process(subOrderProc)
                 .log("suborders created : ${body}")
-                .setHeader("customer_address", simple("${body[0].address}"))
+                .setHeader("customer_address", simple("${body[0].customer.address}", Address.class))
                 .setHeader("nmanufactuer", simple("${body.size()}"))
                 .split(body())
                 .choice()
