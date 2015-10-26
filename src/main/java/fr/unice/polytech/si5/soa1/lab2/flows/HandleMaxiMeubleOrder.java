@@ -23,8 +23,6 @@ public class HandleMaxiMeubleOrder extends RouteBuilder {
     public void configure() throws Exception {
         from(HANDLE_MAXIMEUBLE_ORDER)
                 .log("maximeuble order handler...")
-                .setHeader("customer_address", simple("${body.address}"))
-                .to(HANDLE_MANUFACTURING_PROCESS_ACHIEVED)
         ;
     }
 

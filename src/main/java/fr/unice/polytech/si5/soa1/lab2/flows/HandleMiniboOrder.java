@@ -16,8 +16,6 @@ public class HandleMiniboOrder extends RouteBuilder {
     public void configure() throws Exception {
         from(HANDLE_MINIBO_ORDER)
                 .log("minibo order handler...")
-                .setHeader("customer_address", simple("${body.address}"))
-                .to(HANDLE_MANUFACTURING_PROCESS_ACHIEVED)
         ;
     }
 }
