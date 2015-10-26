@@ -1,4 +1,4 @@
-package fr.unice.polytech.si5.soa1.lab2.flowcatalog.utils;
+package fr.unice.polytech.si5.soa1.lab2.flows.utils;
 
 /**
  * Created by Tianhao on 10/25/2015.

@@ -1,4 +1,4 @@
-package fr.unice.polytech.si5.soa1.lab2.flowcatalog.business;
+package fr.unice.polytech.si5.soa1.lab2.flows.business;
 
 import fr.unice.polytech.si5.soa1.lab2.flows.business.Manufacturer;
 import fr.unice.polytech.si5.soa1.lab2.flows.utils.Pair;
@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * Created by Tianhao on 10/25/2015.
  */
-public class Item implements Serializable {
+public class CatalogItem implements Serializable {
     private Pair<Manufacturer,Integer> id;
     private String name;
     private double price;
@@ -48,7 +48,7 @@ public class Item implements Serializable {
 
     @Override
     public String toString() {
-        return "Item {" +
+        return "CatalogItem {" +
                 ", name='" + name + '\'' +
                 ", manufacturer='" + id.getLeft() + '\'' +
                 ", id='" + id.getRight() + '\'' +

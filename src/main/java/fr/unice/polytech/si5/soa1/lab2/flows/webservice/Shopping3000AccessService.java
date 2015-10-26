@@ -1,4 +1,4 @@
-package fr.unice.polytech.si5.soa1.lab2.flowcatalog;
+package fr.unice.polytech.si5.soa1.lab2.flows.webservice;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
