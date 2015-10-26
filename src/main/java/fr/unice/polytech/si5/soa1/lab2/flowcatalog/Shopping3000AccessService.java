@@ -10,6 +10,6 @@ import javax.jws.WebResult;
 public interface Shopping3000AccessService {
 
     @WebMethod(operationName = "CatalogListAllItem")
-    @WebResult(name="listItem")
-    double getTaxForm(@WebParam(name="request") String request);
+    @WebResult(name="listItems")
+    double listAllItems(@WebParam(name="request") String request);
 }
