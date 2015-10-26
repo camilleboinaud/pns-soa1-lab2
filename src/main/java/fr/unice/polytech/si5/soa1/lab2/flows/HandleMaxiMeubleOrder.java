@@ -23,6 +23,11 @@ public class HandleMaxiMeubleOrder extends RouteBuilder {
     public void configure() throws Exception {
         from(HANDLE_MAXIMEUBLE_ORDER)
                 .log("maximeuble order handler...")
+                .setHeader("input_order", body())
+                .multicast()
+                    .parallelProcessing()
+                    .to(MAKE_MAXIMEUBLE_ORDERREQUEST)
+                .end()
         ;
     }
 
