@@ -2,6 +2,7 @@ package fr.unice.polytech.si5.soa1.lab2.flows;
 
 import static fr.unice.polytech.si5.soa1.lab2.flows.utils.Endpoints.*;
 import fr.unice.polytech.si5.soa1.lab2.flows.processors.SubOrders;
+import fr.unice.polytech.si5.soa1.lab2.flows.utils.aggregators.ListAggregationStrategy;
 import org.apache.camel.builder.RouteBuilder;
 
 public class HandleFullOrder extends RouteBuilder {
@@ -16,6 +17,7 @@ public class HandleFullOrder extends RouteBuilder {
                 .process(subOrderProc)
                 .log("suborders created : ${body}")
                 .setHeader("customer_address", simple("${body[0].address}"))
+                .setHeader("nmanufactuer", simple("${body.size()}"))
                 .split(body())
                 .choice()
                 .when(simple("${body.items[0].left.manufacturer} == 'MINIBO'"))
@@ -28,7 +30,10 @@ public class HandleFullOrder extends RouteBuilder {
                         .log("Could not map order to known manufacturer")
                         .stop()
                 .end()
-                .to(HANDLE_MANUFACTURING_PROCESS_ACHIEVED)
+                .aggregate(new ListAggregationStrategy())
+                .header("customer_address")
+                .completionSize(header("nmanufactuer"))
+                .completionTimeout(3000L)
                 .log("all suborder processed")
 
         ;
