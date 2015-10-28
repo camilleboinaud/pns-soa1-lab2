@@ -34,7 +34,6 @@ public class HandleMaxiMeubleOrder extends RouteBuilder {
 
             for (Exchange exc : exchanges) {
                 Object o = exc.getIn().getBody();
-                System.out.println(o);
                 if (o instanceof OrderRequest) {
                     params.setOrderRequest(exc.getIn().getBody(OrderRequest.class));
                 }
