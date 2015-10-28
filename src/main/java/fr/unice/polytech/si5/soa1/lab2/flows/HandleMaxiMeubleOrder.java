@@ -6,8 +6,12 @@ import fr.unice.polytech.si5.soa1.lab2.flows.business.maximeuble.Client;
 import fr.unice.polytech.si5.soa1.lab2.flows.business.maximeuble.MakeOrderParams;
 import fr.unice.polytech.si5.soa1.lab2.flows.business.maximeuble.OrderRequest;
 import org.apache.camel.Exchange;
+import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.processor.aggregate.AggregationStrategy;
+import org.apache.camel.processor.aggregate.GroupedExchangeAggregationStrategy;
+
+import java.util.List;
 
 
 /**
@@ -15,34 +19,31 @@ import org.apache.camel.processor.aggregate.AggregationStrategy;
  */
 public class HandleMaxiMeubleOrder extends RouteBuilder {
 
-    private static AggregationStrategy joinParams = new AggregationStrategy() {
-        public Exchange aggregate(Exchange oldExchange, Exchange newExchange) {
-            Exchange exc;
-            MakeOrderParams params;
+    Processor joinParams = new Processor () {
 
-            if (oldExchange == null) {
-                params = new MakeOrderParams();
-                exc = newExchange;
-            }
-            else if (newExchange == null) {
-                return newExchange;
-            }
-            else {
-                params = oldExchange.getIn().getBody(MakeOrderParams.class);
-                exc = oldExchange;
-            }
+        public void process(Exchange exchange) throws Exception {
+            List<Exchange> exchanges = (List<Exchange>) exchange.getIn().getBody();
 
-            try {
-                params.setClient(exc.getIn().getBody(Client.class));
-            }
-            catch (Exception e) {
-                try {
+            MakeOrderParams params = builder(exchanges);
+
+            exchange.getIn().setBody(params);
+        }
+
+        private MakeOrderParams builder(List<Exchange> exchanges) {
+            MakeOrderParams params = new MakeOrderParams();
+
+            for (Exchange exc : exchanges) {
+                Object o = exc.getIn().getBody();
+                System.out.println(o);
+                if (o instanceof OrderRequest) {
                     params.setOrderRequest(exc.getIn().getBody(OrderRequest.class));
                 }
-                catch (Exception e2) {}
+                else if (o instanceof Client) {
+                    params.setClient(exc.getIn().getBody(Client.class));
+                }
             }
 
-            return exc;
+            return params;
         }
     };
 
@@ -51,12 +52,12 @@ public class HandleMaxiMeubleOrder extends RouteBuilder {
         from(HANDLE_MAXIMEUBLE_ORDER)
                 .log("maximeuble order handler...")
                 .setHeader("input_order", body())
-                .multicast()
-                    .aggregationStrategy(joinParams)
+                .multicast(new GroupedExchangeAggregationStrategy())
                     .parallelProcessing()
-                    .to(MAKE_MAXIMEUBLE_ORDERREQUEST)
                     .to(MAKE_MAXIMEUBLE_CLIENT)
+                    .to(MAKE_MAXIMEUBLE_ORDERREQUEST)
                 .end()
+                .process(joinParams)
                 .log("multicast output : ${body}")
         ;
     }

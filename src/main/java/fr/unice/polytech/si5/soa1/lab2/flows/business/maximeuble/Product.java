@@ -46,7 +46,12 @@ public class Product implements Serializable {
     public void   setImageLink (String imageLink) { this.imageLink = imageLink; }
 
 
+    @Override
     public String toString() {
-        return "Product (id=" + id + ", name=" + name + ")";
+        return "Product{" +
+                "name='" + name + '\'' +
+                ", productType=" + productType +
+                ", price=" + price +
+                '}';
     }
 }

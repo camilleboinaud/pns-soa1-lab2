@@ -7,6 +7,7 @@ import fr.unice.polytech.si5.soa1.lab2.flows.business.maximeuble.Product;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -16,14 +17,14 @@ import java.util.List;
 public class ProductListToOrderRequest implements Processor{
     public void process(Exchange exchange) throws Exception {
         // retrieving the body of the exchanged message
-        List<OrderItem> input = (List<OrderItem>) exchange.getIn().getBody();
+        ArrayList<OrderItem> input = (ArrayList<OrderItem>) exchange.getIn().getBody();
         // transforming the input
         OrderRequest output = builder(input);
         // Putting the output inside the body of the message
         exchange.getIn().setBody(output);
     }
 
-    OrderRequest builder(List<OrderItem> productList) {
+    OrderRequest builder(ArrayList<OrderItem> productList) {
         OrderRequest orderRequest = new OrderRequest();
         orderRequest.setOrder(productList);
 
