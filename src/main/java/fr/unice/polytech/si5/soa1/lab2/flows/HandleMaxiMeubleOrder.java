@@ -58,6 +58,8 @@ public class HandleMaxiMeubleOrder extends RouteBuilder {
                 .end()
                 .process(joinParams)
                 .log("multicast output : ${body}")
+                .to(MAKE_MAXIMEUBLE_ORDER)
+                .log("Maximeuble order made with id : ${body}")
         ;
     }
 

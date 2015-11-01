@@ -62,7 +62,6 @@ public class MakeMaximeubleOrderRequest extends RouteBuilder {
     @Override
     public void configure() throws Exception {
         from(MAKE_MAXIMEUBLE_ORDERREQUEST)
-                .log("setting header : ${body}")
                 .log("make maximeuble order request")
                 .split(simple("body.items"))
                 .aggregationStrategy(new GroupedExchangeAggregationStrategy())
