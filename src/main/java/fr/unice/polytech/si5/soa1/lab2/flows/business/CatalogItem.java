@@ -3,6 +3,8 @@ package fr.unice.polytech.si5.soa1.lab2.flows.business;
 import fr.unice.polytech.si5.soa1.lab2.flows.business.Manufacturer;
 import fr.unice.polytech.si5.soa1.lab2.flows.utils.Pair;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 
 /**
@@ -11,7 +13,7 @@ import java.io.Serializable;
 public class CatalogItem implements Serializable {
     private Pair<Manufacturer,Integer> id;
     private String name;
-    private double price;
+    private Double price;
     private String description;
 
     public Pair<Manufacturer, Integer> getId() {
@@ -30,11 +32,11 @@ public class CatalogItem implements Serializable {
         this.name = name;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -47,13 +49,21 @@ public class CatalogItem implements Serializable {
     }
 
     @Override
+    public int hashCode() {
+        int result = getPrice() != null ? getPrice().hashCode() : 0;
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "CatalogItem {" +
-                ", name='" + name + '\'' +
-                ", manufacturer='" + id.getLeft() + '\'' +
-                ", id='" + id.getRight() + '\'' +
-                ", description=" + description +
-                ", price=" + price +
+                "name='" + name + '\'' +
+                ",manufacturer='" + id.getLeft() + '\'' +
+                ",id='" + id.getRight() + '\'' +
+                ",description=" + description +
+                ",price=" + price +
                 '}';
     }
 }

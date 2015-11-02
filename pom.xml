@@ -16,7 +16,7 @@
         <camel.version>2.15.2</camel.version>
         <!-- OSGI bundle information (needed to deploy on ServiceMix) -->
         <bundle.symbolicName>${project.artifactId}</bundle.symbolicName>
-        <bundle.namespace>fr.unice.polytech.si5.soa1.shopping3000</bundle.namespace>
+        <bundle.namespace>fr.unice.polytech.si5.soa1.lab2</bundle.namespace>
     </properties>
 
     <dependencies>
