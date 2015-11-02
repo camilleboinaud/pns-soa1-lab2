@@ -10,8 +10,8 @@ public class Endpoints {
     public static final String CSV_OUTPUT_DIRECTORY = "file:camel/output";
 
     public static final String HANDLE_FULL_ORDER = "activemq:handleOrder";
-    public static final String HANDLE_MINIBO_ORDER = "activemq:handleMiniboOrder";
-    public static final String HANDLE_MAXIMEUBLE_ORDER = "activemq:handleMaxiMeubleOrder";
+    public static final String HANDLE_MINIBO_ORDER = "direct:handleMiniboOrder";
+    public static final String HANDLE_MAXIMEUBLE_ORDER = "direct:handleMaxiMeubleOrder";
     public static final String HANDLE_MANUFACTURING_PROCESS_ACHIEVED = "activemq:handleManufacturingProcessAchieved";
 
     public static final String HANDLE_FULL_CATALOG_LIST = "direct:handleCatalogList";
@@ -28,4 +28,5 @@ public class Endpoints {
     public static final String MAKE_MAXIMEUBLE_ORDERREQUEST = "direct:makeMaximeubleOrderRequest";
     public static final String MAKE_MAXIMEUBLE_CLIENT = "direct:makeMaximeubleClient";
     public static final String GET_MAXIMEUBLE_PRODUCT = "direct:getMaximeubleProduct";
+    public static final String MAKE_MAXIMEUBLE_ORDER = "direct:makeMaximeubleOrder";
 }

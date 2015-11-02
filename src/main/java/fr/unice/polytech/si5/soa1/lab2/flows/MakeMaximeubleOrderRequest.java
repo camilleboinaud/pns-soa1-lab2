@@ -10,18 +10,16 @@ import fr.unice.polytech.si5.soa1.lab2.flows.utils.aggregators.ListAggregationSt
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.component.jms.JmsMessage;
+import org.apache.camel.processor.aggregate.GroupedExchangeAggregationStrategy;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MakeMaximeubleOrderRequest extends RouteBuilder {
 
     private static Processor prodLst2ordrReq = new ProductListToOrderRequest();
-
-    private static int nextId = 0;
-
-    public static int getNextId() {
-        return nextId++;
-    }
 
     Processor addMeta = new Processor() {
 
@@ -47,22 +45,33 @@ public class MakeMaximeubleOrderRequest extends RouteBuilder {
         }
     };
 
+    private static final Processor exclst2ordritmlst = new Processor() {
+        public void process(Exchange exchange) throws Exception {
+            List<Exchange> in = exchange.getIn().getBody(List.class);
+
+            List<OrderItem> itms = new ArrayList<OrderItem>();
+
+            for (Exchange exc : in) {
+                itms.add(exc.getIn(JmsMessage.class).getBody(OrderItem.class));
+            }
+
+            exchange.getIn().setBody(itms);
+        }
+    };
+
     @Override
     public void configure() throws Exception {
-        from (MAKE_MAXIMEUBLE_ORDERREQUEST)
-                .log("setting header : ${body}")
-                .setHeader("nprod", simple("${body.items.size()}"))
-                .setHeader("compute_id", constant(getNextId()))
+        from(MAKE_MAXIMEUBLE_ORDERREQUEST)
                 .log("make maximeuble order request")
-
                 .split(simple("body.items"))
-                .setHeader("item", body())
-                .to(GET_MAXIMEUBLE_PRODUCT)
-                .log("product : ${body}")
-                .process(addMeta)
-                .log("orderitem : ${body}")
-                .aggregate(new ListAggregationStrategy()).header("compute_id")
-                .completionSize(header("nprod"))
+                .aggregationStrategy(new GroupedExchangeAggregationStrategy())
+                    .setHeader("item", body())
+                    .to(GET_MAXIMEUBLE_PRODUCT)
+                    .log("product : ${body}")
+                    .process(addMeta)
+                    .log("orderitem : ${body}")
+                .end()
+                .process(exclst2ordritmlst)
                 .log("all products : ${body}")
                 .process(prodLst2ordrReq)
                 .log("route output : ${body}")

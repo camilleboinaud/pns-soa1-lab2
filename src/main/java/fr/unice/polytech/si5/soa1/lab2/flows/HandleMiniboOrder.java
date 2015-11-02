@@ -8,6 +8,10 @@ public class HandleMiniboOrder extends RouteBuilder {
     public void configure() throws Exception {
         from(HANDLE_MINIBO_ORDER)
                 .log("minibo order handler...")
+
+                // mock minibo order result
+                .setBody(constant(3))
+                .log("minibo order made with id : ${body}")
         ;
     }
 }
