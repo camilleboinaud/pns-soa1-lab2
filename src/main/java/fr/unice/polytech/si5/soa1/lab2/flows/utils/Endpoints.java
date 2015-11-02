@@ -23,4 +23,6 @@ public class Endpoints {
     public static final String MAKE_MAXIMEUBLE_CLIENT = "direct:makeMaximeubleClient";
     public static final String GET_MAXIMEUBLE_PRODUCT = "direct:getMaximeubleProduct";
     public static final String MAKE_MAXIMEUBLE_ORDER = "direct:makeMaximeubleOrder";
+
+    public static final String MAXIMEUBLE_CATALOG_SERVICE = GEN_SERVICE + "cxf/CatalogServiceImpl";
 }
