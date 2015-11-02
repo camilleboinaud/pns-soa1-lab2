@@ -34,7 +34,7 @@ public class HandleFullOrder extends RouteBuilder {
                         .log("Routing to minibo order handler")
                         .to(HANDLE_MINIBO_ORDER)
                         .log("minibo choice output : ${body}")
-                        .setHeader("manufacturer", constant("MAXIMEUBLE"))
+                        .setHeader("manufacturer", constant("MINIBO"))
                         .endChoice()
                     .when(simple("${body.items[0].left.manufacturer} == 'MAXIMEUBLE'"))
                         .log("Routing to maximeuble order handler")
