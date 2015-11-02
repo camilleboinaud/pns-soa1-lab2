@@ -17,7 +17,13 @@ public class Endpoints {
     public static final String HANDLE_FULL_CATALOG_LIST = "direct:handleCatalogList";
     public static final String HANDLE_MINIBO_CATALOG_LIST = "direct:handleMiniboCatalogList";
     public static final String HANDLE_MAXIMEUBLE_CATALOG_LIST = "direct:handleMaxiMeubleCatalogList";
-    public static final String MINIBO_CATALOG_SERVICE = GEN_SERVICE + "cxf/BusinessManagementService";
+
+    public static final String HANDLE_FULL_CATALOG_GET_ITEM = "direct:handleCatalogGetItem";
+    public static final String HANDLE_MINIBO_CATALOG_GET_ITEM = "direct:handleMiniboCatalogGetItem";
+    public static final String HANDLE_MAXIMEUBLE_CATALOG_GET_ITEM = "direct:handleMaxiMeubleCatalogGetItem";
+
+    public static final String MINIBO_CATALOG_SERVICE = "spring-ws://" + GEN_SERVICE + "cxf/BusinessManagementService";
+    public static final String MAXIMEUBLE_CATALOG_SERVICE = "spring-ws://" + GEN_SERVICE + "cxf/CatalogServiceImpl";
 
     public static final String MAKE_MAXIMEUBLE_ORDERREQUEST = "direct:makeMaximeubleOrderRequest";
     public static final String MAKE_MAXIMEUBLE_CLIENT = "direct:makeMaximeubleClient";

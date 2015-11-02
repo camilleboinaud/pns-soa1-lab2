@@ -15,10 +15,8 @@ public class HandleFullCatalogList extends RouteBuilder {
                 .multicast()
                     .parallelProcessing()
                     .to(HANDLE_MINIBO_CATALOG_LIST)
+//                    .to("mock:maximeuble")
                     .to(HANDLE_MAXIMEUBLE_CATALOG_LIST)
-                .stop()
-                .end()
-                        //TODO Aggregate back in a single mixed order and give it an id
-                .log("all suborder processed");
+        ;
     }
 }
