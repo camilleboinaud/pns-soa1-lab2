@@ -24,6 +24,7 @@ public class Endpoints {
 
     public static final String MINIBO_CATALOG_SERVICE = "spring-ws://" + GEN_SERVICE + "cxf/BusinessManagementService";
     public static final String MAXIMEUBLE_CATALOG_SERVICE = "spring-ws://" + GEN_SERVICE + "cxf/CatalogServiceImpl";
+    public static final String MAXIMEUBLE_ORDER_SERVICE = "spring-ws://" + GEN_SERVICE + "cxf/OrderServiceImpl";
 
     public static final String MAKE_MAXIMEUBLE_ORDERREQUEST = "direct:makeMaximeubleOrderRequest";
     public static final String MAKE_MAXIMEUBLE_CLIENT = "direct:makeMaximeubleClient";
