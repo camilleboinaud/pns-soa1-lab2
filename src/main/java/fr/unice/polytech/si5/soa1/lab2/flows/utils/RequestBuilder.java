@@ -80,5 +80,13 @@ public class RequestBuilder {
         return builder.toString();
     }
 
+    public String buildStartMiniboOrder() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("<ws:startOrder xmlns:ws=\"http://ws.lab1.soa1.polytech.unice.fr/\">\n");
+        builder.append("</ws:startOrder>\n");
+
+        return builder.toString();
+    }
+
 
 }
