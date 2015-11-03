@@ -4,18 +4,14 @@ import static fr.unice.polytech.si5.soa1.lab2.flows.utils.Endpoints.*;
 
 import fr.unice.polytech.si5.soa1.lab2.flows.business.maximeuble.Product;
 import fr.unice.polytech.si5.soa1.lab2.flows.business.maximeuble.ProductType;
-import fr.unice.polytech.si5.soa1.lab2.flows.utils.MaximeubleRequestBuilder;
+import fr.unice.polytech.si5.soa1.lab2.flows.utils.RequestBuilder;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
-import javax.xml.XMLConstants;
-import javax.xml.transform.Source;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
 /**
@@ -27,9 +23,8 @@ public class GetMaximeubleProduct extends RouteBuilder {
     public void configure() throws Exception {
         from(GET_MAXIMEUBLE_PRODUCT)
                 .log("building product request for id : ${body.left.manufacturerId}")
-                .bean(MaximeubleRequestBuilder.class, "buildProductRequest(${body.left.manufacturerId})")
+                .bean(RequestBuilder.class, "buildMaximeubleProductRequest(${body.left.manufacturerId})")
                 .to(MAXIMEUBLE_CATALOG_SERVICE)
-                //.log("supposedly xml output : ${body}")
                 .process(res2product)
                 .log("got product : ${body}")
                 ;

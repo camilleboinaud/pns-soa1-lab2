@@ -15,17 +15,31 @@ public class RequestBuilder {
         return builder.toString();
     }
 
+    public String buildMiniboProductRequest(String id) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("<ws:displayContent xmlns:ws=\"http://ws.lab1.soa1.polytech.unice.fr/\">\n");
+        builder.append("<contentType>ITEM</contentType>\n");
+        builder.append("<contentId>"+id+"</contentId>\n");
+        builder.append("</ws:displayContent>\n");
+
+        return builder.toString();
+    }
+
+    public String buildMaximeubleProductRequest(String id) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("<sal:findProductById xmlns:sal=\"http://salesmanagement.soa1.polytech.unice.fr/\">\n");
+        builder.append("<product_id>"+id+"</product_id>\n");
+        builder.append("</sal:findProductById>\n");
+
+        return builder.toString();
+    }
+
     public String buildCatalogGetItemRequest(Manufacturer manufacturer,String id) {
         StringBuilder builder = new StringBuilder();
         if (manufacturer == Manufacturer.MINIBO){
-            builder.append("<ws:displayContent xmlns:ws=\"http://ws.lab1.soa1.polytech.unice.fr/\">\n");
-            builder.append("<contentType>ITEM</contentType>\n");
-            builder.append("<contentId>"+id+"</contentId>\n");
-            builder.append("</ws:displayContent>\n");
+            return buildMiniboProductRequest(id);
         }  else if (manufacturer == Manufacturer.MAXIMEUBLE){
-            builder.append("<sal:findProductById xmlns:sal=\"http://salesmanagement.soa1.polytech.unice.fr/\">\n");
-            builder.append("<product_id>"+id+"</product_id>\n");
-            builder.append("</sal:findProductById>\n");
+            return buildMaximeubleProductRequest(id);
         }
         return builder.toString();
     }
