@@ -1,6 +1,8 @@
 package fr.unice.polytech.si5.soa1.lab2.flows.business;
 
 
+import fr.unice.polytech.si5.soa1.lab2.flows.business.shopping3000.Manufacturer;
+
 import java.io.Serializable;
 
 public class OrderItem implements Serializable {

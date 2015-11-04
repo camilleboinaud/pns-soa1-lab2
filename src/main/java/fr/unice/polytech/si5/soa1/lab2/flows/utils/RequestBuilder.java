@@ -1,13 +1,12 @@
 package fr.unice.polytech.si5.soa1.lab2.flows.utils;
 
-import fr.unice.polytech.si5.soa1.lab2.flows.business.Manufacturer;
+import fr.unice.polytech.si5.soa1.lab2.flows.business.shopping3000.Manufacturer;
 import fr.unice.polytech.si5.soa1.lab2.flows.business.maximeuble.*;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.namespace.QName;
 import java.io.StringWriter;
 
@@ -16,31 +15,13 @@ import java.io.StringWriter;
  */
 public class RequestBuilder {
 
-    public String buildCatalogListRequest() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("<ws:listContents xmlns:ws=\"http://ws.lab1.soa1.polytech.unice.fr/\">\n");
-        builder.append("<contentType>ITEM</contentType>\n");
-        builder.append("</ws:listContents>\n");
-        return builder.toString();
-    }
-
-    public String buildMiniboProductRequest(String id) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("<ws:displayContent xmlns:ws=\"http://ws.lab1.soa1.polytech.unice.fr/\">\n");
-        builder.append("<contentType>ITEM</contentType>\n");
-        builder.append("<contentId>"+id+"</contentId>\n");
-        builder.append("</ws:displayContent>\n");
-
-        return builder.toString();
-    }
-
-    public String buildMaximeubleProductRequest(String id) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("<sal:findProductById xmlns:sal=\"http://salesmanagement.soa1.polytech.unice.fr/\">\n");
-        builder.append("<product_id>"+id+"</product_id>\n");
-        builder.append("</sal:findProductById>\n");
-
-        return builder.toString();
+    public String buildCatalogListRequest(Manufacturer manufacturer) {
+        if (manufacturer == Manufacturer.MINIBO){
+            return buildMiniboCatalogListRequest();
+        } else if (manufacturer == Manufacturer.MAXIMEUBLE){
+            return buildMaximeubleCatalogListRequest();
+        }
+        return null;
     }
 
     public String buildMaximeubleMakeOrderRequest(MakeOrderParams params) throws JAXBException {
@@ -88,5 +69,41 @@ public class RequestBuilder {
         return builder.toString();
     }
 
+
+
+    private String buildMiniboCatalogListRequest(){
+        StringBuilder builder = new StringBuilder();
+        builder.append("<ws:listContents xmlns:ws=\"http://ws.lab1.soa1.polytech.unice.fr/\">\n");
+        builder.append("<contentType>ITEM</contentType>\n");
+        builder.append("</ws:listContents>\n");
+        return builder.toString();
+    }
+
+    private String buildMaximeubleCatalogListRequest(){
+        StringBuilder builder = new StringBuilder();
+        builder.append("<ws:listContents xmlns:ws=\"http://ws.lab1.soa1.polytech.unice.fr/\">\n");
+        builder.append("<contentType>ITEM</contentType>\n");
+        builder.append("</ws:listContents>\n");
+        return builder.toString();
+    }
+
+    public String buildMiniboProductRequest(String id) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("<ws:displayContent xmlns:ws=\"http://ws.lab1.soa1.polytech.unice.fr/\">\n");
+        builder.append("<contentType>ITEM</contentType>\n");
+        builder.append("<contentId>"+id+"</contentId>\n");
+        builder.append("</ws:displayContent>\n");
+
+        return builder.toString();
+    }
+
+    public String buildMaximeubleProductRequest(String id) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("<sal:findProductById xmlns:sal=\"http://salesmanagement.soa1.polytech.unice.fr/\">\n");
+        builder.append("<product_id>"+id+"</product_id>\n");
+        builder.append("</sal:findProductById>\n");
+
+        return builder.toString();
+    }
 
 }

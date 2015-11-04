@@ -11,11 +11,9 @@ public class HandleFullCatalogGetItem extends RouteBuilder {
         from(HANDLE_FULL_CATALOG_GET_ITEM)
                 .log("choise item ${body}")
                 .choice()
-                    .when(simple("${body.id.left} == MINIBO"))
-                        .log("${body.id}")
+                    .when(simple("${body.left} == ${type:fr.unice.polytech.si5.soa1.lab2.flows.business.shopping3000.Manufacturer.MINIBO}"))
                         .to(HANDLE_MINIBO_CATALOG_GET_ITEM)
-                    .when(simple("${body.id.left} == MAXIMEUBLE"))
-                        .log("${body.id}")
+                    .when(simple("${body.left} == ${type:fr.unice.polytech.si5.soa1.lab2.flows.business.shopping3000.Manufacturer.MAXIMEUBLE}"))
                         .to(HANDLE_MAXIMEUBLE_CATALOG_GET_ITEM)
                     .otherwise()
                         .to("direct:badId").stop()
@@ -23,7 +21,7 @@ public class HandleFullCatalogGetItem extends RouteBuilder {
         ;
         // bad information about a given citizen
         from("direct:badId")
-                .log("    Bad ID for catalog item ${body.id}, ending here.")
+                .log("    Bad ID for catalog item ${body.left}, ending here.")
         ;
     }
 }

@@ -2,11 +2,9 @@ package fr.unice.polytech.si5.soa1.lab2.flows;
 
 import static fr.unice.polytech.si5.soa1.lab2.flows.utils.Endpoints.*;
 
-import fr.unice.polytech.si5.soa1.lab2.flows.business.Address;
-import fr.unice.polytech.si5.soa1.lab2.flows.business.Manufacturer;
-import fr.unice.polytech.si5.soa1.lab2.flows.business.ManufacturerOrderId;
+import fr.unice.polytech.si5.soa1.lab2.flows.business.shopping3000.Manufacturer;
+import fr.unice.polytech.si5.soa1.lab2.flows.business.shopping3000.Shopping3000ID;
 import fr.unice.polytech.si5.soa1.lab2.flows.processors.FilterOrderByManufacturer;
-import fr.unice.polytech.si5.soa1.lab2.flows.utils.aggregators.ListAggregationStrategy;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
@@ -62,21 +60,21 @@ public class HandleFullOrder extends RouteBuilder {
 
             Manufacturer manufacturer = Manufacturer.valueOf(exchange.getIn().getHeader("manufacturer", String.class));
 
-            ManufacturerOrderId manufacturerOrderId = new ManufacturerOrderId();
-            manufacturerOrderId.setId(id);
-            manufacturerOrderId.setManufacturer(manufacturer);
+            Shopping3000ID shopping3000ID = new Shopping3000ID();
+            shopping3000ID.setId(id);
+            shopping3000ID.setManufacturer(manufacturer);
 
-            exchange.getIn().setBody(manufacturerOrderId);
+            exchange.getIn().setBody(shopping3000ID);
         }
     };
 
     private static Processor orderGroupper = new Processor() {
         public void process(Exchange exchange) throws Exception {
             List<Exchange> in = exchange.getIn(JmsMessage.class).getBody(List.class);
-            List<ManufacturerOrderId> idList = new ArrayList<ManufacturerOrderId>();
+            List<Shopping3000ID> idList = new ArrayList<Shopping3000ID>();
 
             for (Exchange e : in) {
-                idList.add(e.getIn().getBody(ManufacturerOrderId.class));
+                idList.add(e.getIn().getBody(Shopping3000ID.class));
             }
 
             exchange.getIn().setBody(idList);

@@ -1,8 +1,8 @@
 package fr.unice.polytech.si5.soa1.lab2.flows;
 
-import fr.unice.polytech.si5.soa1.lab2.flows.business.CatalogItem;
+import fr.unice.polytech.si5.soa1.lab2.flows.business.shopping3000.Shopping3000Item;
 import fr.unice.polytech.si5.soa1.lab2.flows.utils.RequestBuilder;
-import fr.unice.polytech.si5.soa1.lab2.flows.business.Manufacturer;
+import fr.unice.polytech.si5.soa1.lab2.flows.business.shopping3000.Manufacturer;
 import fr.unice.polytech.si5.soa1.lab2.flows.utils.Pair;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
@@ -42,20 +42,9 @@ public class CallExternalPartners extends RouteBuilder {
                 .process(result2listItem)
         ;
 
-        from(HANDLE_MINIBO_CATALOG_GET_ITEM)
-                .log("get minibo item")
-                .bean(RequestBuilder.class, "buildCatalogGetItemRequest(${body.id.left},${body.id.right})")
-                .to(MINIBO_CATALOG_SERVICE)
-                .log("result get item from minibo")
-                .process(result2item)
-        ;
-
         from(HANDLE_MAXIMEUBLE_CATALOG_GET_ITEM)
-                .log("get minibo item")
-                .bean(RequestBuilder.class, "buildCatalogGetItemRequest(${body.id.left},${body.id.right})")
-                .to(MAXIMEUBLE_CATALOG_SERVICE)
-                .log("result get item from maximeuble")
-                .process(result2item)
+                .log("get maximeuble item")
+                .to(GET_MAXIMEUBLE_PRODUCT)
         ;
 
     }
@@ -67,11 +56,11 @@ public class CallExternalPartners extends RouteBuilder {
         public void process(Exchange exchange) throws Exception {
             Source response = (Source) exchange.getIn().getBody();
 
-            List<CatalogItem> listItems = new ArrayList<CatalogItem>();
+            List<Shopping3000Item> listItems = new ArrayList<Shopping3000Item>();
             NodeList contentsNodeList = (NodeList) xpath.evaluate("//BusinessManagementService_list_contents", response, XPathConstants.NODESET);
             for (int i = 0; i < contentsNodeList.getLength(); i++) {
                 Node node = contentsNodeList.item(i);
-                CatalogItem item = new CatalogItem();
+                Shopping3000Item item = new Shopping3000Item();
                 Integer id = Integer.parseInt(xpath.evaluate("id/text()", node));
                 item.setId(new Pair<Manufacturer, Integer>(Manufacturer.MINIBO,id));
                 item.setName(xpath.evaluate("name/text()", node));
@@ -79,19 +68,10 @@ public class CallExternalPartners extends RouteBuilder {
                 item.setPrice(Double.parseDouble(xpath.evaluate("price/text()", node)));
                 listItems.add(item);
             }
-
-            exchange.getIn().setBody(listItems,ArrayList.class);
+            exchange.getIn().setBody(listItems,List.class);
             System.out.println("process done");
         }
     };
 
-    private static Processor result2item = new Processor() {
 
-        private XPath xpath = XPathFactory.newInstance().newXPath();    // feature:install camel-saxon
-
-        public void process(Exchange exchange) throws Exception {
-            Source response = (Source) exchange.getIn().getBody();
-            System.out.println(response);
-        }
-    };
 }

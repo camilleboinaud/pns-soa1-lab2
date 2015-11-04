@@ -1,6 +1,6 @@
 package fr.unice.polytech.si5.soa1.lab2.flows.processors;
 
-import fr.unice.polytech.si5.soa1.lab2.flows.business.Manufacturer;
+import fr.unice.polytech.si5.soa1.lab2.flows.business.shopping3000.Manufacturer;
 import fr.unice.polytech.si5.soa1.lab2.flows.business.Order;
 import fr.unice.polytech.si5.soa1.lab2.flows.business.OrderItem;
 import fr.unice.polytech.si5.soa1.lab2.flows.utils.Pair;

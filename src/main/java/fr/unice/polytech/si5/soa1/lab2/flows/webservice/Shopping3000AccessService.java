@@ -1,15 +1,13 @@
 package fr.unice.polytech.si5.soa1.lab2.flows.webservice;
 
-import fr.unice.polytech.si5.soa1.lab2.flows.business.CatalogItem;
-import fr.unice.polytech.si5.soa1.lab2.flows.business.Manufacturer;
-import fr.unice.polytech.si5.soa1.lab2.flows.utils.Pair;
+import fr.unice.polytech.si5.soa1.lab2.flows.business.minibo.Item;
+import fr.unice.polytech.si5.soa1.lab2.flows.business.shopping3000.Shopping3000ID;
+import fr.unice.polytech.si5.soa1.lab2.flows.business.shopping3000.Shopping3000Item;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -20,10 +18,9 @@ public interface Shopping3000AccessService {
 
     @WebMethod(operationName = "CatalogListAllItems")
     @WebResult(name="listItems")
-    List listAllItems();
+    List<Object> listAllItems();
 
     @WebMethod(operationName = "CatalogGetItem")
     @WebResult(name="item")
-    CatalogItem getItem(@WebParam(name = "Manufacturer")String manufacturer,
-                        @WebParam(name = "ID")String id);
+    Item getItem(@WebParam(name = "Shopping3000ID") Shopping3000ID id);
 }

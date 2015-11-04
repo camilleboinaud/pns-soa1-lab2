@@ -1,16 +1,13 @@
-package fr.unice.polytech.si5.soa1.lab2.flows.business;
+package fr.unice.polytech.si5.soa1.lab2.flows.business.shopping3000;
 
-import fr.unice.polytech.si5.soa1.lab2.flows.business.Manufacturer;
 import fr.unice.polytech.si5.soa1.lab2.flows.utils.Pair;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 
 /**
  * Created by Tianhao on 10/25/2015.
  */
-public class CatalogItem implements Serializable {
+public class Shopping3000Item implements Serializable {
     private Pair<Manufacturer,Integer> id;
     private String name;
     private Double price;
@@ -58,7 +55,7 @@ public class CatalogItem implements Serializable {
 
     @Override
     public String toString() {
-        return "CatalogItem {" +
+        return "Shopping3000Item {" +
                 "name='" + name + '\'' +
                 ",manufacturer='" + id.getLeft() + '\'' +
                 ",id='" + id.getRight() + '\'' +
