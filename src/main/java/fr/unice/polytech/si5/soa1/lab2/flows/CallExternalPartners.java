@@ -64,7 +64,7 @@ public class CallExternalPartners extends RouteBuilder {
             Shopping3000ID id = exchange.getIn().getBody(Shopping3000ID.class);
             System.out.println(id.toString());
             OrderItem orderItem = new OrderItem(Manufacturer.MAXIMEUBLE,id.getId());
-            exchange.getIn().setBody(orderItem);
+            exchange.getIn().setBody(new Pair<OrderItem,Integer>(orderItem,0));
         }
     };
 

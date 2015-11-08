@@ -20,6 +20,9 @@ import java.util.List;
  */
 public class ItemList2CatalogItemListTranslator {
 
+    /**
+     * translate the list of miniboItem into shopping3000 catalogItem
+     */
     public static Processor miniboItemList2CatalogListItem = new Processor() {
 
         private XPath xpath = XPathFactory.newInstance().newXPath();    // feature:install camel-saxon
@@ -44,6 +47,9 @@ public class ItemList2CatalogItemListTranslator {
         }
     };
 
+    /**
+     * translate the list of maximeubleItem into shopping3000 catalogItem
+     */
     public static Processor maximeubleItemList2CatalogListItem = new Processor() {
 
         private XPath xpath = XPathFactory.newInstance().newXPath();    // feature:install camel-saxon

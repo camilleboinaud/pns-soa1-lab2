@@ -11,6 +11,9 @@ import java.util.List;
  */
 public class ListItem2Shopping3000CatalogItemListTranslator {
 
+    /**
+     * translate the list into list of shopping3000 catalogItem
+     */
     public static Processor list2CatalogListTranslator = new Processor() {
         public void process(Exchange exchange) throws Exception {
             List list = exchange.getIn().getBody(List.class);
