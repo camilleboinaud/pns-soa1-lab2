@@ -1,4 +1,4 @@
-package fr.unice.polytech.si5.soa1.lab2.flows.processors;
+package fr.unice.polytech.si5.soa1.lab2.flows.processors.utils;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;

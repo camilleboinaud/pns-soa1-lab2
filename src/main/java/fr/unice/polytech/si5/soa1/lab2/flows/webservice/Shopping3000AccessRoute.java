@@ -1,6 +1,6 @@
 package fr.unice.polytech.si5.soa1.lab2.flows.webservice;
 
-import fr.unice.polytech.si5.soa1.lab2.flows.processors.Translater;
+import fr.unice.polytech.si5.soa1.lab2.flows.processors.utils.Translater;
 import org.apache.camel.builder.RouteBuilder;
 
 import static fr.unice.polytech.si5.soa1.lab2.flows.utils.Endpoints.*;

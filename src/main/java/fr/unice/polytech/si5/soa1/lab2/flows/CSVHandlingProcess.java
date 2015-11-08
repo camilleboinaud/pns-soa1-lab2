@@ -1,22 +1,30 @@
 package fr.unice.polytech.si5.soa1.lab2.flows;
 
-import static fr.unice.polytech.si5.soa1.lab2.flows.utils.Endpoints.*;
-
-import fr.unice.polytech.si5.soa1.lab2.flows.processors.Csv2Order;
-import fr.unice.polytech.si5.soa1.lab2.flows.processors.FilterCsvByAddress;
+import fr.unice.polytech.si5.soa1.lab2.flows.processors.csv.Csv2Order;
+import fr.unice.polytech.si5.soa1.lab2.flows.processors.csv.FilterCsvByAddress;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.dataformat.CsvDataFormat;
 
+import static fr.unice.polytech.si5.soa1.lab2.flows.utils.Endpoints.CSV_INPUT_DIRECTORY;
+import static fr.unice.polytech.si5.soa1.lab2.flows.utils.Endpoints.HANDLE_FULL_ORDER;
 
-public class HandleCSVFile extends RouteBuilder {
+/**
+ * Created by camille on 08/11/15.
+ */
+public class CSVHandlingProcess extends RouteBuilder{
 
     private static Processor groupCsv = new FilterCsvByAddress();
     private static Processor csv2order = new Csv2Order();
 
+
     @Override
     public void configure() throws Exception {
 
+        /**
+         * This route is used to handle a csv file and tranform each
+         * line into orders.
+         */
         from(CSV_INPUT_DIRECTORY)
                 .log("Processing ${file:name}")
                 .log("  Loading the file as a CSV document")
@@ -29,9 +37,13 @@ public class HandleCSVFile extends RouteBuilder {
                 .log("Got order of ${body}")
                 .to(HANDLE_FULL_ORDER)
         ;
+
     }
 
-    // transform a CSV file delimited by commas, skipping the headers and producing a Map as output
+    /**
+     * Transforms a CSV file delimited by commas, skipping headers and
+     * producing a Map as output.
+     */
     private static CsvDataFormat buildCsvFormat() {
         CsvDataFormat format = new CsvDataFormat();
         format.setDelimiter(",");
