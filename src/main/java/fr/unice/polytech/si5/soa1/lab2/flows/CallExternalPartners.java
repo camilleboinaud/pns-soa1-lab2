@@ -1,6 +1,9 @@
 package fr.unice.polytech.si5.soa1.lab2.flows;
 
-import fr.unice.polytech.si5.soa1.lab2.flows.business.shopping3000.Shopping3000Item;
+import fr.unice.polytech.si5.soa1.lab2.flows.business.OrderItem;
+import fr.unice.polytech.si5.soa1.lab2.flows.business.shopping3000.Shopping3000CatalogItem;
+import fr.unice.polytech.si5.soa1.lab2.flows.business.shopping3000.Shopping3000ID;
+import fr.unice.polytech.si5.soa1.lab2.flows.processors.translator.ItemList2CatalogItemListTranslator;
 import fr.unice.polytech.si5.soa1.lab2.flows.utils.RequestBuilder;
 import fr.unice.polytech.si5.soa1.lab2.flows.business.shopping3000.Manufacturer;
 import fr.unice.polytech.si5.soa1.lab2.flows.utils.Pair;
@@ -28,48 +31,40 @@ public class CallExternalPartners extends RouteBuilder {
     public void configure() throws Exception {
         from(HANDLE_MINIBO_CATALOG_LIST)
                 .log("list all catalog in minibo")
-                .bean(RequestBuilder.class, "buildCatalogListRequest()")
+                .setHeader("manufacturer", constant("MINIBO"))
+                .bean(RequestBuilder.class, "buildCatalogListRequest(${header.manufacturer})")
                 .to(MINIBO_CATALOG_SERVICE)
                 .log("result get from minibo")
-                .process(result2listItem)
+                .process(ItemList2CatalogItemListTranslator.miniboItemList2CatalogListItem)
         ;
 
         from(HANDLE_MAXIMEUBLE_CATALOG_LIST)
                 .log("list all catalog in maximeuble")
-                .bean(RequestBuilder.class, "buildCatalogListRequest()")
-                .to(MINIBO_CATALOG_SERVICE)
+                .setHeader("manufacturer", constant("MAXIMEUBLE"))
+                .bean(RequestBuilder.class, "buildCatalogListRequest(${header.manufacturer})")
+                .to(MAXIMEUBLE_CATALOG_SERVICE)
                 .log("result get from maximeuble")
-                .process(result2listItem)
+                .process(ItemList2CatalogItemListTranslator.maximeubleItemList2CatalogListItem)
         ;
 
         from(HANDLE_MAXIMEUBLE_CATALOG_GET_ITEM)
-                .log("get maximeuble item")
+                .log("start getting maximeuble item")
+                .process(createOrderItemByshopping3000ID)
                 .to(GET_MAXIMEUBLE_PRODUCT)
         ;
 
     }
 
-    private static Processor result2listItem = new Processor() {
-
-        private XPath xpath = XPathFactory.newInstance().newXPath();    // feature:install camel-saxon
+    /**
+     * create a orderItem by shopping 3000ID in order to get maximeuble product
+     */
+    private static Processor createOrderItemByshopping3000ID = new Processor() {
 
         public void process(Exchange exchange) throws Exception {
-            Source response = (Source) exchange.getIn().getBody();
-
-            List<Shopping3000Item> listItems = new ArrayList<Shopping3000Item>();
-            NodeList contentsNodeList = (NodeList) xpath.evaluate("//BusinessManagementService_list_contents", response, XPathConstants.NODESET);
-            for (int i = 0; i < contentsNodeList.getLength(); i++) {
-                Node node = contentsNodeList.item(i);
-                Shopping3000Item item = new Shopping3000Item();
-                Integer id = Integer.parseInt(xpath.evaluate("id/text()", node));
-                item.setId(new Pair<Manufacturer, Integer>(Manufacturer.MINIBO,id));
-                item.setName(xpath.evaluate("name/text()", node));
-                item.setDescription(xpath.evaluate("description/text()", node));
-                item.setPrice(Double.parseDouble(xpath.evaluate("price/text()", node)));
-                listItems.add(item);
-            }
-            exchange.getIn().setBody(listItems,List.class);
-            System.out.println("process done");
+            Shopping3000ID id = exchange.getIn().getBody(Shopping3000ID.class);
+            System.out.println(id.toString());
+            OrderItem orderItem = new OrderItem(Manufacturer.MAXIMEUBLE,id.getId());
+            exchange.getIn().setBody(orderItem);
         }
     };
 

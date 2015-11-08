@@ -35,8 +35,8 @@ public class MaximeubleOrderProcess extends RouteBuilder {
          * it into POJO.
          */
         from(GET_MAXIMEUBLE_PRODUCT)
-                .log("building product request for id : ${body.left.manufacturerId}")
-                .bean(RequestBuilder.class, "buildMaximeubleProductRequest(${body.left.manufacturerId})")
+                .log("building product request for id : ${body.manufacturerId}") //shi: it was ${body.left.manufacturerId} I add .setBody(simple("${body.left}")) in MAKE_MAXIMEUBLE_ORDERREQUEST
+                .bean(RequestBuilder.class, "buildMaximeubleProductRequest(${body.manufacturerId})")//shi: it was ${body.left.manufacturerId}
                 .to(MAXIMEUBLE_CATALOG_SERVICE)
                 .process(res2product)
                 .log("got product : ${body}")
@@ -87,7 +87,8 @@ public class MaximeubleOrderProcess extends RouteBuilder {
                 .split(simple("body.items"))
                     .aggregationStrategy(new GroupedExchangeAggregationStrategy())
                     .setHeader("item", body())
-                    .to(GET_MAXIMEUBLE_PRODUCT)
+                    .setBody(simple("${body.left}")) // shi: change it for adapting webservice
+                .to(GET_MAXIMEUBLE_PRODUCT)
                     .log("product : ${body}")
                     .process(product2orderitem)
                     .log("orderitem : ${body}")

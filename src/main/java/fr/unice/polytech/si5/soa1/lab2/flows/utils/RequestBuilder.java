@@ -81,9 +81,7 @@ public class RequestBuilder {
 
     private String buildMaximeubleCatalogListRequest(){
         StringBuilder builder = new StringBuilder();
-        builder.append("<ws:listContents xmlns:ws=\"http://ws.lab1.soa1.polytech.unice.fr/\">\n");
-        builder.append("<contentType>ITEM</contentType>\n");
-        builder.append("</ws:listContents>\n");
+        builder.append("<sal:fetchCatalog xmlns:sal=\"http://salesmanagement.soa1.polytech.unice.fr/\"/>\n");
         return builder.toString();
     }
 

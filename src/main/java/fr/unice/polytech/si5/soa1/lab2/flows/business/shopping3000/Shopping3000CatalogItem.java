@@ -2,17 +2,21 @@ package fr.unice.polytech.si5.soa1.lab2.flows.business.shopping3000;
 
 import fr.unice.polytech.si5.soa1.lab2.flows.utils.Pair;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 
 /**
  * Created by Tianhao on 10/25/2015.
  */
-public class Shopping3000Item implements Serializable {
+@XmlType(name = "Shopping3000CatalogItem")
+public class Shopping3000CatalogItem implements Serializable {
     private Pair<Manufacturer,Integer> id;
     private String name;
     private Double price;
     private String description;
 
+    @XmlElement(name = "id", required = true)
     public Pair<Manufacturer, Integer> getId() {
         return id;
     }
@@ -21,6 +25,7 @@ public class Shopping3000Item implements Serializable {
         this.id = id;
     }
 
+    @XmlElement(name = "name", required = true)
     public String getName() {
         return name;
     }
@@ -29,6 +34,7 @@ public class Shopping3000Item implements Serializable {
         this.name = name;
     }
 
+    @XmlElement(name = "price", required = true)
     public Double getPrice() {
         return price;
     }
@@ -37,6 +43,7 @@ public class Shopping3000Item implements Serializable {
         this.price = price;
     }
 
+    @XmlElement(name = "description", required = true)
     public String getDescription() {
         return description;
     }
@@ -55,7 +62,7 @@ public class Shopping3000Item implements Serializable {
 
     @Override
     public String toString() {
-        return "Shopping3000Item {" +
+        return "Shopping3000CatalogItem {" +
                 "name='" + name + '\'' +
                 ",manufacturer='" + id.getLeft() + '\'' +
                 ",id='" + id.getRight() + '\'' +
