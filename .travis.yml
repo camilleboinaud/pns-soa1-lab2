@@ -8,3 +8,8 @@ notifications:
       - pierre.leca@etu.unice.fr
     on_success: change
     on_failure: always
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/842a38d444ff1867516e
+    on_success: always
+    on_failure: always
