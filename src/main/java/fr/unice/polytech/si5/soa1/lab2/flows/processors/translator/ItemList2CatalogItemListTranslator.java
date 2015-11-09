@@ -42,8 +42,7 @@ public class ItemList2CatalogItemListTranslator {
                 item.setPrice(Double.parseDouble(xpath.evaluate("price/text()", node)));
                 listItems.add(item);
             }
-            exchange.getIn().setBody(listItems,List.class);
-            System.out.println("process done");
+            exchange.getIn().setBody(listItems);
         }
     };
 
@@ -68,8 +67,7 @@ public class ItemList2CatalogItemListTranslator {
                 item.setPrice(Double.parseDouble(xpath.evaluate("price/text()", node)));
                 listItems.add(item);
             }
-            exchange.getIn().setBody(listItems,List.class);
-            System.out.println("process done");
+            exchange.getIn().setBody(listItems);
         }
     };
 }

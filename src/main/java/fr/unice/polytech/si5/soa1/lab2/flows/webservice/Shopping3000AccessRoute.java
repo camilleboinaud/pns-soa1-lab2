@@ -14,15 +14,15 @@ public class Shopping3000AccessRoute  extends RouteBuilder {
 
         // Retrieve a list
         from("direct:listItems")
-                .log("listItem with ${body}")
+                .log("listItem with ${body.class}")
                 .to(HANDLE_FULL_CATALOG_LIST)
-                .log("all list done ${body}")
-                .process(ListItem2Shopping3000CatalogItemListTranslator.list2CatalogListTranslator)
+                .log("all list done ############ ${body.class}")
+//                .process(ListItem2Shopping3000CatalogItemListTranslator.list2CatalogListTranslator)
         ;
 
         from("direct:getItem")
                 .setBody(simple("${body[0]}")) // get first parameter
-                .log("getItem with ${body.left} ${body.right}")
+                .log("getItem with ${body.Manufacturer} ${body.ID}")
                 .to(HANDLE_FULL_CATALOG_GET_ITEM)
                 .setBody(simple("${body}"))
         ;

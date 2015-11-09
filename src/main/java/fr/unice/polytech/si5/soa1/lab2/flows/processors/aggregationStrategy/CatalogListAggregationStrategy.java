@@ -16,8 +16,8 @@ public class CatalogListAggregationStrategy implements AggregationStrategy {
         if (exchange0 == null) {
             return exchange1;
         } else {
-            List<Shopping3000CatalogItem> firstList = exchange0.getIn().getBody(List.class);
-            List<Shopping3000CatalogItem> secondList = exchange1.getIn().getBody(List.class);
+            List<Shopping3000CatalogItem> firstList = (ArrayList<Shopping3000CatalogItem>)exchange0.getIn().getBody();
+            List<Shopping3000CatalogItem> secondList = (ArrayList<Shopping3000CatalogItem>)exchange1.getIn().getBody();
             List<Shopping3000CatalogItem> newList = new ArrayList<Shopping3000CatalogItem>();
             newList.addAll(firstList);
             newList.addAll(secondList);

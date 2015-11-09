@@ -38,7 +38,6 @@ public class ResultToListItemProcessor implements Processor {
             listItems.add(item);
         }
         exchange.getIn().setBody(listItems,List.class);
-        System.out.println("process done");
     }
 
 }
