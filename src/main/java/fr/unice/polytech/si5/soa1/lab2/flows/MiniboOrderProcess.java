@@ -1,10 +1,11 @@
 package fr.unice.polytech.si5.soa1.lab2.flows;
 
-import fr.unice.polytech.si5.soa1.lab2.flows.processors.minibo.ItemTranslationProcessor;
 import fr.unice.polytech.si5.soa1.lab2.flows.processors.common.OrderIdHandlingProcessor;
-import fr.unice.polytech.si5.soa1.lab2.flows.utils.RequestBuilder;
+import fr.unice.polytech.si5.soa1.lab2.flows.processors.minibo.ExchangePairToItemIdListProcessor;
+import fr.unice.polytech.si5.soa1.lab2.flows.request.MiniboOrderRequestBuilder;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.processor.aggregate.GroupedExchangeAggregationStrategy;
 
 import static fr.unice.polytech.si5.soa1.lab2.flows.utils.Endpoints.*;
 import static fr.unice.polytech.si5.soa1.lab2.flows.utils.Endpoints.MINIBO_ORDER_SERVICE;
@@ -15,45 +16,62 @@ import static fr.unice.polytech.si5.soa1.lab2.flows.utils.Endpoints.START_MINIBO
  */
 public class MiniboOrderProcess extends RouteBuilder {
 
-    private static Processor result2item = new ItemTranslationProcessor();
     private static Processor res2id = new OrderIdHandlingProcessor();
+    private static Processor exclst2ordritmlst = new ExchangePairToItemIdListProcessor();
 
     @Override
     public void configure() throws Exception {
 
         /**
-         * Flow used to get an item through Minibo services and
-         * transform result into POJO.
-         */
-        from(HANDLE_MINIBO_CATALOG_GET_ITEM)
-                .log("get minibo item")
-                .bean(RequestBuilder.class, "buildCatalogGetItemRequest(${body.left},${body.right})")
-                .to(MINIBO_CATALOG_SERVICE)
-                .log("result get item from minibo")
-                .process(result2item)
-        ;
-
-        /**
          * Flow used to handle an order from Minibo's services.
          */
         from(HANDLE_MINIBO_ORDER)
-                .log("minibo order handler...")
                 .setProperty("order", body())
                 .to(START_MINIBO_ORDER)
                 .setProperty("order_id", body())
-                        // mock minibo order result
-                .setBody(property("order_id"))
-                .log("minibo order made with id : ${body}")
+                .setBody(property("order"))
+                .split(simple("body.items"))
+                    .aggregationStrategy(new GroupedExchangeAggregationStrategy())
+                    .setHeader("item", body())
+                    .setHeader("order_id", property("order_id"))
+                    .to(MINIBO_ADD_ITEM_TO_ORDER)
+                    .end()
+                .process(exclst2ordritmlst)
+                .log("minibo order n° ${header.order_id} composed by articles' ids : ${body}")
+                .bean(MiniboOrderRequestBuilder.class, "buildSetCustomerMiniboOrder("
+                        + "${header.order_id},"
+                        + "${exchangeProperty.order.customer})"
+                )
+                .to(MINIBO_DELIVERY_SERVICE)
+                .process(res2id)
+                .log("Customer added to order n°${body}")
         ;
+
+
+        /**
+         * Flow used to add an item to order using Minibo's services
+         */
+        from(MINIBO_ADD_ITEM_TO_ORDER)
+                .setProperty("item", body())
+                .bean(MiniboOrderRequestBuilder.class, "buildAddItemMiniboOrder("
+                                + "${header[order_id]},"
+                                + "${body.left.manufacturerId},"
+                                + "${body.right})"
+                )
+                .to(MINIBO_ORDER_SERVICE)
+                .process(res2id)
+                .log("item n°${exchangeProperty.item.left.manufacturerId} has been added to order n°${body}")
+        ;
+
 
         /**
          * Initializes order into Minibo's services and stores id returned.
          */
         from(START_MINIBO_ORDER)
-                .bean(RequestBuilder.class, "buildStartMiniboOrder()")
+                .bean(MiniboOrderRequestBuilder.class, "buildStartMiniboOrder()")
                 .to(MINIBO_ORDER_SERVICE)
                 .process(res2id)
-                .log("id: ${body}")
+                .log("order n°id: ${body} has been created successfully")
         ;
 
     }

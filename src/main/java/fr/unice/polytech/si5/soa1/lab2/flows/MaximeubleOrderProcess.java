@@ -1,10 +1,12 @@
 package fr.unice.polytech.si5.soa1.lab2.flows;
 
+import fr.unice.polytech.si5.soa1.lab2.flows.business.maximeuble.OrderItem;
+import fr.unice.polytech.si5.soa1.lab2.flows.business.shopping3000.Manufacturer;
 import fr.unice.polytech.si5.soa1.lab2.flows.processors.maximeuble.*;
-import fr.unice.polytech.si5.soa1.lab2.flows.processors.utils.ExchangeListToOrderItemListProcessor;
+import fr.unice.polytech.si5.soa1.lab2.flows.processors.utils.ExchangeListToTemplateListProcessor;
 import fr.unice.polytech.si5.soa1.lab2.flows.processors.common.IDEnhancementProcessor;
 import fr.unice.polytech.si5.soa1.lab2.flows.processors.common.OrderIdHandlingProcessor;
-import fr.unice.polytech.si5.soa1.lab2.flows.utils.RequestBuilder;
+import fr.unice.polytech.si5.soa1.lab2.flows.request.MaximeulbleOrderRequestBuilder;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.processor.aggregate.GroupedExchangeAggregationStrategy;
@@ -24,7 +26,8 @@ public class MaximeubleOrderProcess extends RouteBuilder {
     private static Processor res2id = new OrderIdHandlingProcessor();
     private static Processor addMeta = new IDEnhancementProcessor();
     private static Processor product2orderitem = new ProductToOrderItemProcessor();
-    private static Processor exclst2ordritmlst = new ExchangeListToOrderItemListProcessor();
+    private static Processor exclst2ordritmlst =
+            new ExchangeListToTemplateListProcessor<OrderItem>();
     private static Processor prodLst2ordrReq = new ProductListToOrderRequest();
 
     @Override
@@ -36,7 +39,7 @@ public class MaximeubleOrderProcess extends RouteBuilder {
          */
         from(GET_MAXIMEUBLE_PRODUCT)
                 .log("building product request for id : ${body.left.manufacturerId}")
-                .bean(RequestBuilder.class, "buildMaximeubleProductRequest(${body.left.manufacturerId})")
+                .bean(MaximeulbleOrderRequestBuilder.class, "buildMaximeubleProductRequest(${body.left.manufacturerId})")
                 .to(MAXIMEUBLE_CATALOG_SERVICE)
                 .process(res2product)
                 .log("got product : ${body}")
@@ -72,7 +75,7 @@ public class MaximeubleOrderProcess extends RouteBuilder {
          */
         from (MAKE_MAXIMEUBLE_ORDER)
                 .log("make order : ${body}")
-                .bean(RequestBuilder.class, "buildMaximeubleMakeOrderRequest(${body})")
+                .bean(MaximeulbleOrderRequestBuilder.class, "buildMaximeubleMakeOrderRequest(${body})")
                 .log("request : ${body}")
                 .to(MAXIMEUBLE_ORDER_SERVICE)
                 .log("order service result : ${body}")
@@ -92,6 +95,7 @@ public class MaximeubleOrderProcess extends RouteBuilder {
                     .process(product2orderitem)
                     .log("orderitem : ${body}")
                     .end()
+                .setHeader("manufacturer", constant(Manufacturer.MAXIMEUBLE))
                 .process(exclst2ordritmlst)
                 .log("all products : ${body}")
                 .process(prodLst2ordrReq)

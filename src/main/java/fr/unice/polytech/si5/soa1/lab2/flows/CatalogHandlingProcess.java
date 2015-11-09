@@ -1,5 +1,9 @@
 package fr.unice.polytech.si5.soa1.lab2.flows;
 
+import fr.unice.polytech.si5.soa1.lab2.flows.processors.catalogue.ResultToListItemProcessor;
+import fr.unice.polytech.si5.soa1.lab2.flows.processors.minibo.ItemTranslationProcessor;
+import fr.unice.polytech.si5.soa1.lab2.flows.request.CatalogueRequestBuilder;
+import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 
 import static fr.unice.polytech.si5.soa1.lab2.flows.utils.Endpoints.*;
@@ -10,6 +14,9 @@ import static fr.unice.polytech.si5.soa1.lab2.flows.utils.Endpoints.HANDLE_MINIB
  * Created by camille on 08/11/15.
  */
 public class CatalogHandlingProcess extends RouteBuilder {
+
+    private static Processor result2listItem = new ResultToListItemProcessor();
+    private static Processor result2item = new ItemTranslationProcessor();
 
     @Override
     public void configure() throws Exception {
@@ -48,6 +55,39 @@ public class CatalogHandlingProcess extends RouteBuilder {
                 .parallelProcessing()
                 .to(HANDLE_MINIBO_CATALOG_LIST)
                 .to(HANDLE_MAXIMEUBLE_CATALOG_LIST)
+        ;
+
+        from(HANDLE_MINIBO_CATALOG_LIST)
+                .log("list all catalog in minibo")
+                .bean(CatalogueRequestBuilder.class, "buildCatalogListRequest()")
+                .to(MINIBO_CATALOG_SERVICE)
+                .log("result get from minibo")
+                .process(result2listItem)
+        ;
+
+        from(HANDLE_MAXIMEUBLE_CATALOG_LIST)
+                .log("list all catalog in maximeuble")
+                .bean(CatalogueRequestBuilder.class, "buildCatalogListRequest()")
+                .to(MINIBO_CATALOG_SERVICE)
+                .log("result get from maximeuble")
+                .process(result2listItem)
+        ;
+
+        from(HANDLE_MAXIMEUBLE_CATALOG_GET_ITEM)
+                .log("get maximeuble item")
+                .to(GET_MAXIMEUBLE_PRODUCT)
+        ;
+
+        /**
+         * Flow used to get an item through Minibo services and
+         * transform result into POJO.
+         */
+        from(HANDLE_MINIBO_CATALOG_GET_ITEM)
+                .log("get minibo item")
+                .bean(CatalogueRequestBuilder.class, "buildCatalogGetItemRequest(${body.left},${body.right})")
+                .to(MINIBO_CATALOG_SERVICE)
+                .log("result get item from minibo")
+                .process(result2item)
         ;
 
     }
