@@ -34,10 +34,10 @@ public class CatalogHandlingProcess extends RouteBuilder {
         from(HANDLE_FULL_CATALOG_GET_ITEM)
                 .log("choice item ${body}")
                 .choice()
-                    .when(simple("${body.Manufacturer} == ${type:fr.unice.polytech.si5.soa1.lab2.flows.business.shopping3000.Manufacturer.MINIBO}"))
+                    .when(simple("${body.left} == ${type:fr.unice.polytech.si5.soa1.lab2.flows.business.shopping3000.Manufacturer.MINIBO}"))
                         .to(HANDLE_MINIBO_CATALOG_GET_ITEM)
                         .process(Item2CatalogItemTranslator.miniboItem2CatalogItemTranslator)
-                    .when(simple("${body.Manufacturer} == ${type:fr.unice.polytech.si5.soa1.lab2.flows.business.shopping3000.Manufacturer.MAXIMEUBLE}"))
+                    .when(simple("${body.left} == ${type:fr.unice.polytech.si5.soa1.lab2.flows.business.shopping3000.Manufacturer.MAXIMEUBLE}"))
                         .to(HANDLE_MAXIMEUBLE_CATALOG_GET_ITEM)
                         .process(Item2CatalogItemTranslator.malleableItem2CatalogItemTranslator)
                     .otherwise()
@@ -87,7 +87,7 @@ public class CatalogHandlingProcess extends RouteBuilder {
 
         from(HANDLE_MAXIMEUBLE_CATALOG_GET_ITEM)
                 .log("start getting maximeuble item")
-                .process(createOrderItemByshopping3000ID)
+                .setBody(simple("${body.right}"))
                 .to(GET_MAXIMEUBLE_PRODUCT)
         ;
 
@@ -104,18 +104,5 @@ public class CatalogHandlingProcess extends RouteBuilder {
         ;
 
     }
-
-    /**
-     * create a orderItem by shopping 3000ID in order to get maximeuble product
-     */
-    private static Processor createOrderItemByshopping3000ID = new Processor() {
-
-        public void process(Exchange exchange) throws Exception {
-            Shopping3000ID id = exchange.getIn().getBody(Shopping3000ID.class);
-            System.out.println(id.toString());
-            OrderItem orderItem = new OrderItem(Manufacturer.MAXIMEUBLE,id.getId());
-            exchange.getIn().setBody(new Pair<OrderItem,Integer>(orderItem,0));
-        }
-    };
 
 }

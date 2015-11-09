@@ -10,25 +10,23 @@ import javax.xml.bind.annotation.XmlType;
  * Created by lecpie on 11/1/15.
  */
 @XmlType(name = "Shopping3000ID")
-public class Shopping3000ID {
-
-    private Pair<Manufacturer, Integer> id = new Pair<Manufacturer, Integer>();
+public class Shopping3000ID extends Pair<Manufacturer,Integer>{
 
     @XmlElement(name = "Manufacturer", required = true)
     public Manufacturer getManufacturer() {
-        return this.id.getLeft();
+        return this.getLeft();
     }
 
     public void setManufacturer (Manufacturer manufacturer) {
-        this.id.setLeft(manufacturer);
+        this.setLeft(manufacturer);
     }
 
     public Integer getId() {
-        return this.id.getRight();
+        return this.getRight();
     }
 
     @XmlElement(name = "ID", required = true)
     public void setId (Integer id) {
-        this.id.setRight(id);
+        this.setRight(id);
     }
 }

@@ -20,7 +20,7 @@ public interface Shopping3000AccessService {
 
     @WebMethod(operationName = "CatalogListAllItems")
     @WebResult(name="listItems")
-    List<Shopping3000CatalogItem> listAllItems();
+    Shopping3000CatalogItemList listAllItems();
 
     @WebMethod(operationName = "CatalogGetItem")
     @WebResult(name="item")
