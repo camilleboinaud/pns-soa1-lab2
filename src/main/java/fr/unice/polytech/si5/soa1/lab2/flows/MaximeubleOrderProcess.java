@@ -90,7 +90,7 @@ public class MaximeubleOrderProcess extends RouteBuilder {
                 .split(simple("body.items"))
                     .aggregationStrategy(new GroupedExchangeAggregationStrategy())
                     .setHeader("item", body())
-                    .to(GET_MAXIMEUBLE_PRODUCT)
+                .to(GET_MAXIMEUBLE_PRODUCT)
                     .log("product : ${body}")
                     .process(product2orderitem)
                     .log("orderitem : ${body}")

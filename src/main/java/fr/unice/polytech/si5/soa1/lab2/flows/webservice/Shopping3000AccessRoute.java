@@ -1,6 +1,6 @@
 package fr.unice.polytech.si5.soa1.lab2.flows.webservice;
 
-import fr.unice.polytech.si5.soa1.lab2.flows.processors.utils.Translater;
+import fr.unice.polytech.si5.soa1.lab2.flows.processors.translator.ListItem2Shopping3000CatalogItemListTranslator;
 import org.apache.camel.builder.RouteBuilder;
 
 import static fr.unice.polytech.si5.soa1.lab2.flows.utils.Endpoints.*;
@@ -17,9 +17,7 @@ public class Shopping3000AccessRoute  extends RouteBuilder {
                 .log("listItem with ${body}")
                 .to(HANDLE_FULL_CATALOG_LIST)
                 .log("all list done ${body}")
-                .process(Translater.tranlaterTable2List)
-//                .log("after translate ${body}")
-//                .setBody(simple("${body}"))
+                .process(ListItem2Shopping3000CatalogItemListTranslator.list2CatalogListTranslator)
         ;
 
         from("direct:getItem")
@@ -39,7 +37,6 @@ public class Shopping3000AccessRoute  extends RouteBuilder {
                 .when(simple("${in.headers.operationName} == 'CatalogListAllItems'"))
                 .log("CatalogListAllItems")
                 .to("direct:listItems")
-                .process(Translater.tranlaterTable2List)
                 .when(simple("${in.headers.operationName} == 'CatalogGetItem'"))
                 .log("CatalogGetItem")
                 .to("direct:getItem")
