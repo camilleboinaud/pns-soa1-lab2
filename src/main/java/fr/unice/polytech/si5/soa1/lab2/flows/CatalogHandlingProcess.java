@@ -1,16 +1,11 @@
 package fr.unice.polytech.si5.soa1.lab2.flows;
 
-import fr.unice.polytech.si5.soa1.lab2.flows.business.OrderItem;
-import fr.unice.polytech.si5.soa1.lab2.flows.business.shopping3000.Manufacturer;
-import fr.unice.polytech.si5.soa1.lab2.flows.business.shopping3000.Shopping3000ID;
 import fr.unice.polytech.si5.soa1.lab2.flows.processors.aggregationStrategy.CatalogListAggregationStrategy;
 import fr.unice.polytech.si5.soa1.lab2.flows.processors.catalogue.ResultToListItemProcessor;
 import fr.unice.polytech.si5.soa1.lab2.flows.processors.minibo.ItemTranslationProcessor;
 import fr.unice.polytech.si5.soa1.lab2.flows.processors.translator.Item2CatalogItemTranslator;
 import fr.unice.polytech.si5.soa1.lab2.flows.processors.translator.ItemList2CatalogItemListTranslator;
 import fr.unice.polytech.si5.soa1.lab2.flows.request.CatalogueRequestBuilder;
-import fr.unice.polytech.si5.soa1.lab2.flows.utils.Pair;
-import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 

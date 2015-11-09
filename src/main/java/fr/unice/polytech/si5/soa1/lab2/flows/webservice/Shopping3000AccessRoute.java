@@ -1,5 +1,6 @@
 package fr.unice.polytech.si5.soa1.lab2.flows.webservice;
 
+import fr.unice.polytech.si5.soa1.lab2.flows.processors.catalogue.ReadPairIdProcessor;
 import fr.unice.polytech.si5.soa1.lab2.flows.processors.translator.ListItem2Shopping3000CatalogItemListTranslator;
 import org.apache.camel.builder.RouteBuilder;
 
@@ -9,6 +10,9 @@ import static fr.unice.polytech.si5.soa1.lab2.flows.utils.Endpoints.*;
  * Created by Tianhao on 10/25/2015.
  */
 public class Shopping3000AccessRoute  extends RouteBuilder {
+
+    static ReadPairIdProcessor readPairIdProcessor = new ReadPairIdProcessor();
+
     @Override
     public void configure() throws Exception {
 
@@ -23,6 +27,7 @@ public class Shopping3000AccessRoute  extends RouteBuilder {
         from("direct:getItem")
                 .setBody(simple("${body[0]}")) // get first parameter
                 .log("getItem with ${body.left} ${body.right}")
+                .process(readPairIdProcessor)
                 .to(HANDLE_FULL_CATALOG_GET_ITEM)
                 .setBody(simple("${body}"))
         ;
@@ -45,4 +50,6 @@ public class Shopping3000AccessRoute  extends RouteBuilder {
                 .endChoice()
         ;
     }
+
+
 }

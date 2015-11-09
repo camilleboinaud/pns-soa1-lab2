@@ -37,7 +37,7 @@ public class ResultToListItemProcessor implements Processor {
             item.setPrice(Double.parseDouble(xpath.evaluate("price/text()", node)));
             listItems.add(item);
         }
-        exchange.getIn().setBody(listItems,List.class);
+        exchange.getIn().setBody(listItems);
     }
 
 }

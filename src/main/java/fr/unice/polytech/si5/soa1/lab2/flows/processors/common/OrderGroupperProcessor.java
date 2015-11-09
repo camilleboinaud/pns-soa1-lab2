@@ -1,6 +1,7 @@
 package fr.unice.polytech.si5.soa1.lab2.flows.processors.common;
 
-import fr.unice.polytech.si5.soa1.lab2.flows.business.shopping3000.Shopping3000ID;
+import fr.unice.polytech.si5.soa1.lab2.flows.business.shopping3000.Manufacturer;
+import fr.unice.polytech.si5.soa1.lab2.flows.utils.Pair;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.component.jms.JmsMessage;
@@ -15,10 +16,10 @@ public class OrderGroupperProcessor implements Processor {
 
     public void process(Exchange exchange) throws Exception {
         List<Exchange> in = exchange.getIn(JmsMessage.class).getBody(List.class);
-        List<Shopping3000ID> idList = new ArrayList<Shopping3000ID>();
+        List<Pair<Manufacturer,Integer>> idList = new ArrayList<Pair<Manufacturer,Integer>>();
 
         for (Exchange e : in) {
-            idList.add(e.getIn().getBody(Shopping3000ID.class));
+            idList.add((Pair<Manufacturer,Integer>)e.getIn().getBody());
         }
 
         exchange.getIn().setBody(idList);
