@@ -1,7 +1,6 @@
 package fr.unice.polytech.si5.soa1.lab2.flows.processors.utils;
 
 import fr.unice.polytech.si5.soa1.lab2.flows.business.maximeuble.OrderItem;
-import fr.unice.polytech.si5.soa1.lab2.flows.business.shopping3000.Manufacturer;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.component.jms.JmsMessage;
@@ -27,7 +26,7 @@ public class ExchangeListToTemplateListProcessor<T> implements Processor {
         List<T> itms = new ArrayList<T>();
 
         for (Exchange exc : in) {
-            itms.add(exc.getIn(JmsMessage.class).getBody(parameterType));
+            itms.add(exc.getIn().getBody(parameterType));
         }
 
         exchange.getIn().setBody(itms);
