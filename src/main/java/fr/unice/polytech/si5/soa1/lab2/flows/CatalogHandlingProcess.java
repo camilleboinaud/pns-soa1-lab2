@@ -54,7 +54,8 @@ public class CatalogHandlingProcess extends RouteBuilder {
          */
         from(HANDLE_FULL_CATALOG_LIST)
                 .log("START multicast list item for each manufacturer")
-                .multicast(new CatalogListAggregationStrategy())
+                .multicast()
+                    .aggregationStrategy(new CatalogListAggregationStrategy())
                     .parallelProcessing()
                     .to(HANDLE_MINIBO_CATALOG_LIST)
                     .to(HANDLE_MAXIMEUBLE_CATALOG_LIST)

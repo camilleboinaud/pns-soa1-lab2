@@ -9,7 +9,7 @@ import static fr.unice.polytech.si5.soa1.lab2.flows.utils.Endpoints.*;
 /**
  * Created by Tianhao on 10/25/2015.
  */
-public class Shopping3000AccessRoute  extends RouteBuilder {
+public class Shopping3000AccessRoute extends RouteBuilder {
 
     static ReadPairIdProcessor readPairIdProcessor = new ReadPairIdProcessor();
 
@@ -32,7 +32,7 @@ public class Shopping3000AccessRoute  extends RouteBuilder {
                 .setBody(simple("${body}"))
         ;
 
-        from("direct:badRequest")
+        from("direct:badCatalogRequest")
                 .log("This is a bad request!")
         ;
 
@@ -46,7 +46,7 @@ public class Shopping3000AccessRoute  extends RouteBuilder {
                 .log("CatalogGetItem")
                 .to("direct:getItem")
                 .otherwise()
-                .to("direct:badRequest").stop()
+                .to("direct:badCatalogRequest").stop()
                 .endChoice()
         ;
     }
