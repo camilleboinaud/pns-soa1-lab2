@@ -13,8 +13,8 @@ import javax.jws.WebService;
 /**
  * Created by Tianhao on 10/25/2015.
  */
-@WebService(serviceName = "Shopping3000AccessService")
-public interface Shopping3000AccessService {
+@WebService(serviceName = "Shopping3000CatalogService")
+public interface Shopping3000CatalogService {
 
     @WebMethod(operationName = "CatalogListAllItems")
     @WebResult(name="listItems")

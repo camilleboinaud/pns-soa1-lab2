@@ -9,7 +9,7 @@ import static fr.unice.polytech.si5.soa1.lab2.flows.utils.Endpoints.*;
 /**
  * Created by Tianhao on 10/25/2015.
  */
-public class Shopping3000AccessRoute extends RouteBuilder {
+public class Shopping3000CatalogRoute extends RouteBuilder {
 
     static ReadPairIdProcessor readPairIdProcessor = new ReadPairIdProcessor();
 
@@ -37,7 +37,7 @@ public class Shopping3000AccessRoute extends RouteBuilder {
         ;
 
 
-        from("cxf:/Shopping3000AccessService?serviceClass=fr.unice.polytech.si5.soa1.lab2.flows.webservice.Shopping3000AccessService")
+        from("cxf:/Shopping3000CatalogService?serviceClass=fr.unice.polytech.si5.soa1.lab2.flows.webservice.Shopping3000CatalogService")
                 .choice()
                 .when(simple("${in.headers.operationName} == 'CatalogListAllItems'"))
                 .log("CatalogListAllItems")
