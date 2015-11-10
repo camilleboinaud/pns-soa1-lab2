@@ -10,6 +10,8 @@ public class OrderItem implements Serializable {
     private Manufacturer manufacturer;
     private int manufacturerId;
 
+    public OrderItem() {}
+
     public OrderItem(Manufacturer manufacturer, int manufacturerId){
         this.manufacturer = manufacturer;
         this.manufacturerId = manufacturerId;

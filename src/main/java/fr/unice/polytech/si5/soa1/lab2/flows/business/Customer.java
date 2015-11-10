@@ -12,6 +12,8 @@ public class Customer implements Serializable{
     protected String email;
     protected CreditCard creditCard;
 
+    public Customer() {}
+
     public Customer(String name, Address address, String email, CreditCard creditCard){
 
         if(name == null || address == null || email == null || creditCard == null) {

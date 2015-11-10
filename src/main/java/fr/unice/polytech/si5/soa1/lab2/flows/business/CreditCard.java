@@ -11,6 +11,8 @@ public class CreditCard implements Serializable {
     protected String validity;
     protected String csc;
 
+    public  CreditCard() {}
+
     public CreditCard(String number, String validity, String csc) {
         this.number = number;
         this.validity = validity;
