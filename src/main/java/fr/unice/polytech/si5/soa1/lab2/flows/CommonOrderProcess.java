@@ -28,6 +28,7 @@ public class CommonOrderProcess extends RouteBuilder {
          * using each manufacturer's specific process.
          */
         from(HANDLE_FULL_ORDER)
+                .log("Full order route input : ${body}")
                 .log("partitionning order by manufacturer")
                 .process(subOrderProc)
                 .log("suborders created : ${body}")

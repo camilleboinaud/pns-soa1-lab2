@@ -1,6 +1,7 @@
 package fr.unice.polytech.si5.soa1.lab2.flows.webservice;
 
 import fr.unice.polytech.si5.soa1.lab2.flows.business.Customer;
+import fr.unice.polytech.si5.soa1.lab2.flows.business.Order;
 import fr.unice.polytech.si5.soa1.lab2.flows.business.OrderItem;
 
 import javax.jws.WebMethod;
@@ -34,5 +35,9 @@ public interface Shopping3000OrderService {
     @WebMethod(operationName = "validate_order")
     @WebResult(name="success")
     boolean validateOrder (@WebParam(name = "order_id") int orderId);
+
+    @WebMethod(operationName = "get_order")
+    @WebResult(name="order")
+    Order getOrder(@WebParam(name = "order_id") int orderId);
 
 }
