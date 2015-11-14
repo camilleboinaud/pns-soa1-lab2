@@ -3,9 +3,11 @@ package fr.unice.polytech.si5.soa1.lab2.flows.webservice;
 import fr.unice.polytech.si5.soa1.lab2.flows.business.Customer;
 import fr.unice.polytech.si5.soa1.lab2.flows.business.Order;
 import fr.unice.polytech.si5.soa1.lab2.flows.business.OrderItem;
+import fr.unice.polytech.si5.soa1.lab2.flows.processors.common.OrderResponseToOrder;
 import fr.unice.polytech.si5.soa1.lab2.flows.request.CatalogueRequestBuilder;
 import fr.unice.polytech.si5.soa1.lab2.flows.utils.Endpoints;
 import fr.unice.polytech.si5.soa1.lab2.flows.utils.Pair;
+import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 
 import java.util.HashMap;
@@ -18,6 +20,8 @@ public class Shopping3000OrderRoute extends RouteBuilder {
 
     private static Map<Integer, Order> orders = new HashMap<Integer, Order>();
     private static int nextid = 0;
+
+    private static Processor res2order = new OrderResponseToOrder();
 
     private synchronized int getNextid() {
         return nextid++;
@@ -118,6 +122,12 @@ public class Shopping3000OrderRoute extends RouteBuilder {
                 .bean(Shopping3000OrderRoute.class, "getAmount(${body})")
                 .log("amount : ${body}")
         ;
+
+        from("direct:get_order")
+
+                .process(res2order)
+                ;
+
 
     }
 

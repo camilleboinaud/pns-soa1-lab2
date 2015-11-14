@@ -40,4 +40,5 @@ public interface Shopping3000OrderService {
     @WebResult(name="order")
     Order getOrder(@WebParam(name = "order_id") int orderId);
 
+
 }
