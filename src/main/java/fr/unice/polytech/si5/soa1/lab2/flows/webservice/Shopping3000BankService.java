@@ -14,5 +14,6 @@ import javax.jws.WebService;
 public interface Shopping3000BankService {
     @WebMethod(operationName = "PayByCreditCard")
     @WebResult(name="paymentResult")
-    boolean payByCreditCard(@WebParam(name = "CreditCard")CreditCard creditCard);
+    boolean payByCreditCard(@WebParam(name = "CreditCard")CreditCard creditCard,
+                            @WebParam(name = "Amount")int amount);
 }
