@@ -31,13 +31,11 @@ public class MiniboOrderProcess extends RouteBuilder {
                 .setProperty("order_id", body())
                 .setBody(property("order"))
                 .split(simple("body.items"))
-                    .aggregationStrategy(new GroupedExchangeAggregationStrategy())
                     .setHeader("item", body())
                     .setHeader("order_id", property("order_id"))
                     .to(MINIBO_ADD_ITEM_TO_ORDER)
-                    .end()
-                .process(exclst2ordritmlst)
-                .log("minibo order n° ${header.order_id} composed by articles' ids : ${body}")
+                .end()
+                .log("minibo order item split end : ${body}")
                 .bean(MiniboOrderRequestBuilder.class, "buildSetCustomerMiniboOrder("
                         + "${header.order_id},"
                         + "${exchangeProperty.order.customer})"
