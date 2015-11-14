@@ -1,6 +1,6 @@
 name,email,address,zipcode,city,creditcard,expiration,csc,manufacturer,itemid,quantity
-shopping3000,soa.shopping3000@gmail.com,superaddress,6060,SuperCity,123456,2015-10-26T18:14:32.014+01:00,123,MINIBO,1,12
-shopping3000,soa.shopping3000@gmail.com,superaddress,6060,SuperCity,123456,2015-10-26T18:14:32.014+01:00,123,MINIBO,2,5
+shopping3000,shi.tianhao.sth@gmail.com,superaddress,6060,SuperCity,123456,2015-10-26T18:14:32.014+01:00,123,MINIBO,1,12
+shopping3000,shi.tianhao.sth@gmail.com,superaddress,6060,SuperCity,123456,2015-10-26T18:14:32.014+01:00,123,MINIBO,2,5
 hello,shi.tianhao.sth@gmail.com,superaddress,6060,SuperCity,123456,2015-10-26T18:14:32.014+01:00,123,MAXIMEUBLE,2,5
 hello,shi.tianhao.sth@gmail.com,superaddress,6060,SuperCity,123456,2015-10-26T18:14:32.014+01:00,123,MAXIMEUBLE,1,2
 bye,camille.boinaud@etu.unice.fr,superduperaddress,6060,SuperCity,123456,2015-10-26T18:14:32.014+01:00,123,MINIBO,2,30

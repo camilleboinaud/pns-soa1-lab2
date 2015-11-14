@@ -1,5 +1,7 @@
 package fr.unice.polytech.si5.soa1.lab2.flows;
 
+import static fr.unice.polytech.si5.soa1.lab2.flows.utils.Endpoints.*;
+
 import fr.unice.polytech.si5.soa1.lab2.flows.processors.common.FilterOrderByManufacturer;
 import fr.unice.polytech.si5.soa1.lab2.flows.processors.common.IDEnhancementProcessor;
 import fr.unice.polytech.si5.soa1.lab2.flows.processors.common.MailRequestProcessor;
@@ -63,11 +65,11 @@ public class CommonOrderProcess extends RouteBuilder {
                 .log("split end output : ${body}")
                 .setBody(property("shop3000_order_id"))
                 .log("shop 3000 order id : ${body}")
-                .to("activemq:send_confirmation_email")
+                .to(SEND_CONFIRMATION_EMAIL)
                 .log("all suborder processed")
         ;
 
-        from("activemq:send_confirmation_email")
+        from(SEND_CONFIRMATION_EMAIL)
                 .setProperty("shop3000_order_id", body())
                 .to("direct:get_order")
                 .setProperty("email", simple("${body.customer.email}"))
@@ -75,7 +77,7 @@ public class CommonOrderProcess extends RouteBuilder {
                 .to("direct:get_amount")
                 .setProperty("price", body())
                 .setBody(simple("${headers.shop3000_order_id}"))
-                .setBody(simple("Your order has been processed, your id is ${exchangeProperty.shop3000_order_id} and the amount is ${exchangeProperty.price}. Thank you for your trust !"))
+                .setBody(simple("Your order has been processed, your id is ${exchangeProperty.shop3000_order_id} and the amount is ${exchangeProperty.price} Euros. Thank you for your trust !"))
                 .log("sending mail to ${exchangeProperty.email} with content : ${body}")
                 .process(mailrqstproc)
                 .to("activemq:sendEmail")

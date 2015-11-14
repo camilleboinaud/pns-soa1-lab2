@@ -79,7 +79,7 @@ public class Shopping3000OrderRoute extends RouteBuilder {
     @Override
     public void configure() throws Exception {
 
-        from("cxf:/Shopping3000OrderService?serviceClass=fr.unice.polytech.si5.soa1.lab2.flows.webservice.Shopping3000OrderService&wrapped=true")
+        from(ORDER_SERVICE_INTERCEPTOR)
                 .choice()
                 .when(simple("${in.headers.operationName} == 'start_order'"))
                     .to("direct:start_order")
@@ -101,23 +101,23 @@ public class Shopping3000OrderRoute extends RouteBuilder {
                 .endChoice()
         ;
 
-        from("direct:start_order")
+        from(START_ORDER)
             .log("start_order")
             .bean(Shopping3000OrderRoute.class, "startOrder()")
             .log("set order id : ${body}")
         ;
 
-        from("direct:add_order_item")
+        from(ADD_ORDER_ITEM)
                 .log("add_order_item")
                 .bean(Shopping3000OrderRoute.class, "addOrderItem(${body[0]},${body[1]},${body[2]})")
         ;
 
-        from("direct:set_customer")
+        from(SET_CUSTOMER)
                 .log("set_customer")
                 .bean(Shopping3000OrderRoute.class, "setCustomer(${body[0]},${body[1]})")
         ;
 
-        from("direct:validate_order")
+        from(VALIDATE_ORDER)
                 .log("validate_order with id ${body}")
                 .setProperty("order_id", body())
                 .setHeader("shop3000_order_id", body())
@@ -138,9 +138,8 @@ public class Shopping3000OrderRoute extends RouteBuilder {
                 .log("validated order : ${body}")
         ;
 
-        from("direct:get_amount")
+        from(GET_AMOUNT)
                 .log("get_amount")
-                //.bean(Shopping3000OrderRoute.class, "getAmount(${body})")
                 .to("direct:get_order")
                 .split(simple("${body.items}"))
                 .aggregationStrategy(new GroupedExchangeAggregationStrategy())
@@ -156,11 +155,11 @@ public class Shopping3000OrderRoute extends RouteBuilder {
         ;
 
 
-        from("direct:get_order")
+        from(GET_ORDER)
                 .bean(Shopping3000OrderRoute.class, "getOrder(${body})")
         ;
 
-        from ("direct:register_order")
+        from (REGISTER_ORDER)
                 .bean(Shopping3000OrderRoute.class, "registerOrder(${body})")
                 ;
 
