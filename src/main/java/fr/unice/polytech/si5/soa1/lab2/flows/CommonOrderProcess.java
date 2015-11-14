@@ -1,7 +1,10 @@
 package fr.unice.polytech.si5.soa1.lab2.flows;
 
+import static fr.unice.polytech.si5.soa1.lab2.flows.utils.Endpoints.*;
+
 import fr.unice.polytech.si5.soa1.lab2.flows.processors.common.FilterOrderByManufacturer;
 import fr.unice.polytech.si5.soa1.lab2.flows.processors.common.IDEnhancementProcessor;
+import fr.unice.polytech.si5.soa1.lab2.flows.processors.common.MailRequestProcessor;
 import fr.unice.polytech.si5.soa1.lab2.flows.processors.common.OrderGroupperProcessor;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
@@ -17,6 +20,7 @@ public class CommonOrderProcess extends RouteBuilder {
     private static Processor subOrderProc = new FilterOrderByManufacturer();
     private static Processor addManufacturerMeta = new IDEnhancementProcessor();
     private static Processor orderGroupper = new OrderGroupperProcessor();
+    private static Processor mailrqstproc = new MailRequestProcessor();
 
     @Override
     public void configure() throws Exception {
@@ -27,6 +31,7 @@ public class CommonOrderProcess extends RouteBuilder {
          */
         from(HANDLE_FULL_ORDER)
                 .log("Full order route input : ${body}")
+                .setProperty("shop3000_order_id", simple("${body.id}"))
                 .log("Associated shopping3000 order id : ${headers.shop3000_order_id}")
                 .log("partitionning order by manufacturer")
                 .process(subOrderProc)
@@ -56,6 +61,9 @@ public class CommonOrderProcess extends RouteBuilder {
                 .end()
                 .process(orderGroupper)
                 .log("split end output : ${body}")
+                .setBody(property("shop3000_order_id"))
+                .log("shop 3000 order id : ${body}")
+                .to(SEND_CONFIRMATION_EMAIL)
                 .log("all suborder processed")
                 .to(PAY_ORDER_TO_MANUFACTURER)
         ;
@@ -76,6 +84,20 @@ public class CommonOrderProcess extends RouteBuilder {
                         .end()
                 .end()
                 .log("payment to manufacturer : ${body} achieved")
+        ;
+
+        from(SEND_CONFIRMATION_EMAIL)
+                .setProperty("shop3000_order_id", body())
+                .to("direct:get_order")
+                .setProperty("email", simple("${body.customer.email}"))
+                .setBody(simple("${exchangeProperty.shop3000_order_id}"))
+                .to("direct:get_amount")
+                .setProperty("price", body())
+                .setBody(simple("${headers.shop3000_order_id}"))
+                .setBody(simple("Your order has been processed, your id is ${exchangeProperty.shop3000_order_id} and the amount is ${exchangeProperty.price} Euros. Thank you for your trust !"))
+                .log("sending mail to ${exchangeProperty.email} with content : ${body}")
+                .process(mailrqstproc)
+                .to("activemq:sendEmail")
         ;
 
     }

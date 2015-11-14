@@ -44,4 +44,16 @@ public class Endpoints {
 
     public static final String SHOPPING3000_EMAIL_SERVICE = "smtp://smtp.googlemail.com:587?username=soa.shopping3000@gmail.com&password=polytech&mail.smtp.auth=true&mail.smtp.starttls.enable=true";
 
+    public static final String SEND_CONFIRMATION_EMAIL = "activemq:send_confirmation_email";
+
+    public static final String ORDER_SERVICE_INTERCEPTOR = "cxf:/Shopping3000OrderService?serviceClass=fr.unice.polytech.si5.soa1.lab2.flows.webservice.Shopping3000OrderService";
+
+    public static final String START_ORDER = "direct:start_order";
+    public static final String ADD_ORDER_ITEM = "direct:add_order_item";
+    public static final String SET_CUSTOMER = "direct:set_customer";
+    public static final String VALIDATE_ORDER = "direct:validate_order";
+    public static final String GET_AMOUNT = "direct:get_amount";
+    public static final String GET_ORDER = "direct:get_order";
+    public static final String REGISTER_ORDER = "direct:register_order";
+
 }
