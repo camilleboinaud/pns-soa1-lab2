@@ -1,6 +1,7 @@
 package fr.unice.polytech.si5.soa1.lab2.flows;
 
 import fr.unice.polytech.si5.soa1.lab2.flows.business.maximeuble.OrderItem;
+import fr.unice.polytech.si5.soa1.lab2.flows.business.maximeuble.OrderStatus;
 import fr.unice.polytech.si5.soa1.lab2.flows.business.shopping3000.Manufacturer;
 import fr.unice.polytech.si5.soa1.lab2.flows.processors.maximeuble.*;
 import fr.unice.polytech.si5.soa1.lab2.flows.processors.utils.ExchangeListToTemplateListProcessor;
@@ -80,7 +81,16 @@ public class MaximeubleOrderProcess extends RouteBuilder {
                 .to(MAXIMEUBLE_ORDER_SERVICE)
                 .log("order service result : ${body}")
                 .process(res2id)
+                .setProperty("maximeuble_order_id", body())
+                .setHeader("order_status", constant(OrderStatus.PRODUCING))
+                .to("activemq:change_maximeuble_order_status")
+
         ;
+
+        from("activemq:change_maximeuble_order_status")
+                .bean(MaximeulbleOrderRequestBuilder.class, "buildMaximeubleChangeStatusRequest(${body},${headers.new_status})")
+                .to(MAXIMEUBLE_ORDER_SERVICE)
+                ;
 
         /**
          * Flaw used to build an order request

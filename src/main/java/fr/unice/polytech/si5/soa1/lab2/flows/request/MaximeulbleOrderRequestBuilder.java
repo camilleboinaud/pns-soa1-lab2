@@ -50,4 +50,14 @@ public class MaximeulbleOrderRequestBuilder {
         return builder.toString();
     }
 
+    public String buildMaximeubleChangeStatusRequest(int orderId, OrderStatus orderStatus) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("<sal:changeOrderStatus xmlns:sal=\"http://salesmanagement.soa1.polytech.unice.fr/\">\n");
+        builder.append("<order_status>" + orderStatus + "</order_status>");
+        builder.append("<order_id>" + orderId + "</order_id>");
+        builder.append("</sal:changeOrderStatus>\n");
+
+        return builder.toString();
+    }
+
 }
