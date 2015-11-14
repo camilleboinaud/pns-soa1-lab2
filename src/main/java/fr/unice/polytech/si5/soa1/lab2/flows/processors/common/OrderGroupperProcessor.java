@@ -15,7 +15,7 @@ import java.util.List;
 public class OrderGroupperProcessor implements Processor {
 
     public void process(Exchange exchange) throws Exception {
-        List<Exchange> in = exchange.getIn(JmsMessage.class).getBody(List.class);
+        List<Exchange> in = exchange.getIn().getBody(List.class);
         List<Pair<Manufacturer,Integer>> idList = new ArrayList<Pair<Manufacturer,Integer>>();
 
         for (Exchange e : in) {
