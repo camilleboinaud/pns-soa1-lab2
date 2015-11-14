@@ -29,6 +29,7 @@ public class MaximeubleOrderProcess extends RouteBuilder {
     private static Processor exclst2ordritmlst =
             new ExchangeListToTemplateListProcessor<OrderItem>();
     private static Processor prodLst2ordrReq = new ProductListToOrderRequest();
+    private static Processor catchOrderRequest = new CatchOrderRequestProcessor();
 
     @Override
     public void configure() throws Exception {
@@ -83,7 +84,7 @@ public class MaximeubleOrderProcess extends RouteBuilder {
         ;
 
         /**
-         * Flaw used to build an order request
+         * Flow used to build an order request
          */
         from(MAKE_MAXIMEUBLE_ORDERREQUEST)
                 .log("make maximeuble order request")
@@ -102,6 +103,20 @@ public class MaximeubleOrderProcess extends RouteBuilder {
                 .log("all products : ${body}")
                 .process(prodLst2ordrReq)
                 .log("route output : ${body}")
+        ;
+
+        /**
+         * Flow used to process an order payment for Maximeuble.
+         */
+        from(MAXIMEUBLE_ORDER_PAYMENT)
+                .log("maximeuble payment : ${body.right}")
+                .bean(MaximeulbleOrderRequestBuilder.class, "buildFetchOrderRequest(${body.right})")
+                .log("call to service order_request : ${body}")
+                .to(MAXIMEUBLE_ORDER_SERVICE)
+                .process(catchOrderRequest)
+                .log("order_request : ${body}")
+                .bean(MaximeulbleOrderRequestBuilder.class, "buildPaymentRequest(${body})")
+                .to(MAXIMEUBLE_BILLING_SERVICE)
         ;
 
     }

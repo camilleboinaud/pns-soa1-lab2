@@ -1,6 +1,7 @@
 package fr.unice.polytech.si5.soa1.lab2.flows.request;
 
 import fr.unice.polytech.si5.soa1.lab2.flows.business.Customer;
+import fr.unice.polytech.si5.soa1.lab2.flows.business.shopping3000.Shopping3000Resources;
 
 /**
  * Created by camille on 08/11/15.
@@ -39,21 +40,35 @@ public class MiniboOrderRequestBuilder {
 
     }
 
-    public String buildSetCustomerMiniboOrder(String orderId, Customer customer){
+    public String buildSetCustomerMiniboOrder(String orderId){
 
         StringBuilder builder = new StringBuilder();
 
         builder.append("<ws:provideCustomerShipmentData xmlns:ws=\"http://ws.lab1.soa1.polytech.unice.fr/\">\n");
         builder.append("<orderId>"+orderId+"</orderId>\n");
         builder.append("<firstname>not_specified</firstname>\n");
-        builder.append("<lastname>"+customer.getName()+"</lastname>\n");
-        builder.append("<address>"+customer.getAddress().getAddress()+"</address>\n");
-        builder.append("<zipcode>"+customer.getAddress().getZipcode()+"</zipcode>\n");
-        builder.append("<city>"+customer.getAddress().getCity()+"</city>\n");
+        builder.append("<lastname>"+ Shopping3000Resources.shopping3000Data.getName()+"</lastname>\n");
+        builder.append("<address>"+Shopping3000Resources.shopping3000Data.getAddress().getAddress()+"</address>\n");
+        builder.append("<zipcode>"+Shopping3000Resources.shopping3000Data.getAddress().getZipcode()+"</zipcode>\n");
+        builder.append("<city>"+Shopping3000Resources.shopping3000Data.getAddress().getCity()+"</city>\n");
         builder.append("<country>not_specified</country>\n");
         builder.append("<phone>not_specified</phone>\n");
-        builder.append("<email>"+customer.getEmail()+"</email>\n");
+        builder.append("<email>"+Shopping3000Resources.shopping3000Data.getEmail()+"</email>\n");
         builder.append("</ws:provideCustomerShipmentData>\n");
+
+        return builder.toString();
+
+    }
+
+    public String buildPayOrderMinibo(String orderId){
+
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("<ws:payOrder xmlns:ws=\"http://ws.lab1.soa1.polytech.unice.fr/\">\n");
+        builder.append("<orderId>"+orderId+"</orderId>");
+        builder.append("<creditCardNumber>"+Shopping3000Resources.shopping3000Data.getCreditcard().getNumber()+"</creditCardNumber>");
+        builder.append("<email>"+Shopping3000Resources.shopping3000Data.getEmail()+"</email>");
+        builder.append("</ws:payOrder>\n");
 
         return builder.toString();
 

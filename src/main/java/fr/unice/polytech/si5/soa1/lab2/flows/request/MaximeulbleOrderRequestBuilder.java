@@ -1,6 +1,7 @@
 package fr.unice.polytech.si5.soa1.lab2.flows.request;
 
 import fr.unice.polytech.si5.soa1.lab2.flows.business.maximeuble.*;
+import fr.unice.polytech.si5.soa1.lab2.flows.utils.Shopping3000Info;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -46,6 +47,36 @@ public class MaximeulbleOrderRequestBuilder {
         builder.append(orderRequestString);
         builder.append(clientString);
         builder.append("</sal:makeOrder>\n");
+
+        return builder.toString();
+    }
+
+    public String buildFetchOrderRequest(String id){
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("<sal:fetchOrderRequest xmlns:sal=\"http://salesmanagement.soa1.polytech.unice.fr/\">\n");
+        builder.append("<order_id>"+id+"</order_id>\n");
+        builder.append("</sal:fetchOrderRequest>\n");
+
+        return builder.toString();
+    }
+
+    public String buildPaymentRequest(String orderRequest){
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("<sal:payOrder xmlns:sal=\"http://salesmanagement.soa1.polytech.unice.fr/\">\n");
+
+        builder.append(orderRequest+"\n");
+
+        builder.append("<payment_info>");
+        builder.append("<card_expire>"+ Shopping3000Info.SHOPPING3000_CREDIT_CARD.getNumber()+"</card_expire>");
+        builder.append("<card_number>"+ Shopping3000Info.SHOPPING3000_CREDIT_CARD.getValidity()+"</card_number>");
+        builder.append("<csc>"+ Shopping3000Info.SHOPPING3000_CREDIT_CARD.getCsc()+"</csc>");
+        builder.append("</payment_info>\n");
+
+        builder.append("<payment_plan>DIRECT</payment_plan>");
+
+        builder.append("</sal:payOrder>\n");
 
         return builder.toString();
     }

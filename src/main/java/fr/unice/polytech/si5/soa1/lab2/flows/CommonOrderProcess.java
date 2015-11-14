@@ -7,9 +7,7 @@ import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.processor.aggregate.GroupedExchangeAggregationStrategy;
 
-import static fr.unice.polytech.si5.soa1.lab2.flows.utils.Endpoints.HANDLE_FULL_ORDER;
-import static fr.unice.polytech.si5.soa1.lab2.flows.utils.Endpoints.HANDLE_MAXIMEUBLE_ORDER;
-import static fr.unice.polytech.si5.soa1.lab2.flows.utils.Endpoints.HANDLE_MINIBO_ORDER;
+import static fr.unice.polytech.si5.soa1.lab2.flows.utils.Endpoints.*;
 
 /**
  * Created by camille on 08/11/15.
@@ -58,6 +56,25 @@ public class CommonOrderProcess extends RouteBuilder {
                 .process(orderGroupper)
                 .log("split end output : ${body}")
                 .log("all suborder processed")
+                .to(PAY_ORDER_TO_MANUFACTURER)
+        ;
+
+        from(PAY_ORDER_TO_MANUFACTURER)
+                .split(body())
+                    .choice()
+                        .when(simple("${body.left} == 'MINIBO'"))
+                            .to(MINIBO_ORDER_PAYMENT)
+                            .endChoice()
+                        .when(simple("${body.left} == 'MAXIMEUBLE'"))
+                            .to(MAXIMEUBLE_ORDER_PAYMENT)
+                            .endChoice()
+                        .otherwise()
+                            .log("Could not map order to known manufacturer")
+                            .stop()
+                            .endChoice()
+                        .end()
+                .end()
+                .log("payment to manufacturer : ${body} achieved")
         ;
 
     }

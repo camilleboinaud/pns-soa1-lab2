@@ -31,17 +31,12 @@ public class MiniboOrderProcess extends RouteBuilder {
                 .setProperty("order_id", body())
                 .setBody(property("order"))
                 .split(simple("body.items"))
-                    .aggregationStrategy(new GroupedExchangeAggregationStrategy())
                     .setHeader("item", body())
                     .setHeader("order_id", property("order_id"))
                     .to(MINIBO_ADD_ITEM_TO_ORDER)
-                    .end()
-                .process(exclst2ordritmlst)
-                .log("minibo order n° ${header.order_id} composed by articles' ids : ${body}")
-                .bean(MiniboOrderRequestBuilder.class, "buildSetCustomerMiniboOrder("
-                        + "${header.order_id},"
-                        + "${exchangeProperty.order.customer})"
-                )
+                .end()
+                .log("minibo order n° ${header.order_id} composed by articles ${body.items}")
+                .bean(MiniboOrderRequestBuilder.class, "buildSetCustomerMiniboOrder(${header.order_id})")
                 .to(MINIBO_DELIVERY_SERVICE)
                 .process(res2id)
                 .log("Customer added to order n°${body}")
@@ -72,6 +67,15 @@ public class MiniboOrderProcess extends RouteBuilder {
                 .to(MINIBO_ORDER_SERVICE)
                 .process(res2id)
                 .log("order n°id: ${body} has been created successfully")
+        ;
+
+        /**
+         * Flow used to process an order payment for Minibo.
+         */
+        from(MINIBO_ORDER_PAYMENT)
+                .log("minibo processing order payment ${body}")
+                .bean(MiniboOrderRequestBuilder.class, "buildPayOrderMinibo(${body.right})")
+                .to(MINIBO_PAYMENT_SERVICE)
         ;
 
     }

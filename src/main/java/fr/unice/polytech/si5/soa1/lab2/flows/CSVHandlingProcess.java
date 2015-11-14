@@ -6,8 +6,7 @@ import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.dataformat.CsvDataFormat;
 
-import static fr.unice.polytech.si5.soa1.lab2.flows.utils.Endpoints.CSV_INPUT_DIRECTORY;
-import static fr.unice.polytech.si5.soa1.lab2.flows.utils.Endpoints.HANDLE_FULL_ORDER;
+import static fr.unice.polytech.si5.soa1.lab2.flows.utils.Endpoints.*;
 
 /**
  * Created by camille on 08/11/15.
@@ -35,7 +34,7 @@ public class CSVHandlingProcess extends RouteBuilder{
                 .log("  Transforming a CSV lines into Order")
                 .process(csv2order)
                 .log("Got order of ${body}")
-                .to(HANDLE_FULL_ORDER)
+                .to(SHOPPING_3000_PAYMENT)
         ;
 
     }

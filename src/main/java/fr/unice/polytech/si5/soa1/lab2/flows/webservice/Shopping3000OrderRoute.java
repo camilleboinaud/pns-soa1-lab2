@@ -105,7 +105,7 @@ public class Shopping3000OrderRoute extends RouteBuilder {
                 .when(simple("${body} == true"))
                     .setBody(property("order_id"))
                     .bean(Shopping3000OrderRoute.class, "getOrder(${body})")
-                    .to(Endpoints.HANDLE_FULL_ORDER)
+                    .to(Endpoints.SHOPPING_3000_PAYMENT)
                     .setBody(constant(true))
                 .otherwise()
                     .setBody(constant(false))
