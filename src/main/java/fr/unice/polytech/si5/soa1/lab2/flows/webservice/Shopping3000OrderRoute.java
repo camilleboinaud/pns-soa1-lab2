@@ -124,8 +124,8 @@ public class Shopping3000OrderRoute extends RouteBuilder {
         ;
 
         from("direct:get_order")
-
-                .process(res2order)
+                .bean(Shopping3000OrderRoute.class, "getOrder(${body})")
+                //.process(res2order)
                 ;
 
 
