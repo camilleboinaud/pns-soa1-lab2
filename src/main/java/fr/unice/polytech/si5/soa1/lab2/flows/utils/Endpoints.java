@@ -34,4 +34,6 @@ public class Endpoints {
     public static final String START_MINIBO_ORDER = "direct:startMiniboOrder";
     public static final String MINIBO_ADD_ITEM_TO_ORDER = "activemq:miniboAddItemToOrder";
 
+    public static final String SHOPPING3000_EMAIL_SERVICE = "smtp://smtp.googlemail.com:587?username=soa.shopping3000@gmail.com&password=polytech&mail.smtp.auth=true&mail.smtp.starttls.enable=true";
+
 }

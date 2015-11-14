@@ -57,6 +57,13 @@
             <version>${camel.version}</version>
         </dependency>
 
+        <!-- Send Email-->
+        <!-- feature:install -v camel-mail-->
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-mail</artifactId>
+            <version>${camel.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
