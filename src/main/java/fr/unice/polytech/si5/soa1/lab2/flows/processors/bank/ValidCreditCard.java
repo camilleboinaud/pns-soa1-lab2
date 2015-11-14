@@ -11,7 +11,6 @@ public class ValidCreditCard implements Processor {
 
     public void process(Exchange exchange) throws Exception {
         CreditCard creditCard = exchange.getIn().getBody(CreditCard.class);
-        System.out.println(creditCard.toString());
         int number = Integer.parseInt(creditCard.getNumber());
         int csc = Integer.parseInt(creditCard.getCsc());
         if (creditCard.getValidity()!=null){
