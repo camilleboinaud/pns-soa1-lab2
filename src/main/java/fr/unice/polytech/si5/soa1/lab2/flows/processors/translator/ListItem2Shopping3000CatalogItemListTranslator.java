@@ -17,7 +17,6 @@ public class ListItem2Shopping3000CatalogItemListTranslator {
     public static Processor list2CatalogListTranslator = new Processor() {
         public void process(Exchange exchange) throws Exception {
             List list = exchange.getIn().getBody(List.class);
-            System.out.println(list.toString());
             Shopping3000CatalogItemList newList = new Shopping3000CatalogItemList();
             newList.setCatalogItemList(list);
             exchange.getIn().setBody(newList);

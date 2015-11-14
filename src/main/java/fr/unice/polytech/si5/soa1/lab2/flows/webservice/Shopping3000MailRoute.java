@@ -19,9 +19,6 @@ public class Shopping3000MailRoute extends RouteBuilder {
                 .setBody(simple("true", Boolean.class))
         ;
 
-
-
-
         from("cxf:/Shopping3000MailService?serviceClass=fr.unice.polytech.si5.soa1.lab2.flows.webservice.Shopping3000MailService")
                 .filter(simple("${in.headers.operationName} == 'SendEmail'"))
                 .to("activemq:sendEmail")

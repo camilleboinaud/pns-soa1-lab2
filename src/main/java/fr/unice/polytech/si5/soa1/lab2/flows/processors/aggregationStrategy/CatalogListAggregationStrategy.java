@@ -12,7 +12,6 @@ import java.util.List;
  */
 public class CatalogListAggregationStrategy implements AggregationStrategy {
     public Exchange aggregate(Exchange exchange0, Exchange exchange1) {
-        System.out.println("CatalogListAggregationStrategy");
         if (exchange0 == null) {
             return exchange1;
         } else {

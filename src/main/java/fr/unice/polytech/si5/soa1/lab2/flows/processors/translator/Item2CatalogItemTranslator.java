@@ -30,7 +30,6 @@ public class Item2CatalogItemTranslator {
     public static Processor miniboItem2CatalogItemTranslator = new Processor() {
         public void process(Exchange exchange) throws Exception {
             Item item = exchange.getIn().getBody(Item.class);
-            System.out.println(item.toString());
             Shopping3000CatalogItem catalogItem = miniboItem2CatalogItem(item);
             exchange.getIn().setBody(catalogItem);
         }
@@ -53,7 +52,6 @@ public class Item2CatalogItemTranslator {
     public static Processor malleableItem2CatalogItemTranslator = new Processor() {
         public void process(Exchange exchange) throws Exception {
             Product item = exchange.getIn().getBody(Product.class);
-            System.out.println(item.toString());
             Shopping3000CatalogItem catalogItem = maximeubleItem2CatalogItem(item);
             exchange.getIn().setBody(catalogItem);
         }
