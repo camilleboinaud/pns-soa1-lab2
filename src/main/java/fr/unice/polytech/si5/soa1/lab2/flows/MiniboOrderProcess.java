@@ -35,8 +35,11 @@ public class MiniboOrderProcess extends RouteBuilder {
                     .setHeader("order_id", property("order_id"))
                     .to(MINIBO_ADD_ITEM_TO_ORDER)
                 .end()
-                .log("minibo order n° ${header.order_id} composed by articles ${body.items}")
-                .bean(MiniboOrderRequestBuilder.class, "buildSetCustomerMiniboOrder(${header.order_id})")
+                .log("minibo order item split end : ${body}")
+                .bean(MiniboOrderRequestBuilder.class, "buildSetCustomerMiniboOrder("
+                        + "${header.order_id},"
+                        + "${exchangeProperty.order.customer})"
+                )
                 .to(MINIBO_DELIVERY_SERVICE)
                 .process(res2id)
                 .log("Customer added to order n°${body}")
@@ -67,15 +70,6 @@ public class MiniboOrderProcess extends RouteBuilder {
                 .to(MINIBO_ORDER_SERVICE)
                 .process(res2id)
                 .log("order n°id: ${body} has been created successfully")
-        ;
-
-        /**
-         * Flow used to process an order payment for Minibo.
-         */
-        from(MINIBO_ORDER_PAYMENT)
-                .log("minibo processing order payment ${body}")
-                .bean(MiniboOrderRequestBuilder.class, "buildPayOrderMinibo(${body.right})")
-                .to(MINIBO_PAYMENT_SERVICE)
         ;
 
     }

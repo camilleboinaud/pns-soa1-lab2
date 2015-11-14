@@ -27,6 +27,7 @@ public class CommonOrderProcess extends RouteBuilder {
          */
         from(HANDLE_FULL_ORDER)
                 .log("Full order route input : ${body}")
+                .log("Associated shopping3000 order id : ${headers.shop3000_order_id}")
                 .log("partitionning order by manufacturer")
                 .process(subOrderProc)
                 .log("suborders created : ${body}")
