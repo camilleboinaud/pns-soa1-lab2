@@ -1,14 +1,19 @@
 package fr.unice.polytech.si5.soa1.lab2.flows.webservice;
 
+import static fr.unice.polytech.si5.soa1.lab2.flows.utils.Endpoints.*;
+
 import fr.unice.polytech.si5.soa1.lab2.flows.business.Customer;
 import fr.unice.polytech.si5.soa1.lab2.flows.business.Order;
 import fr.unice.polytech.si5.soa1.lab2.flows.business.OrderItem;
-import fr.unice.polytech.si5.soa1.lab2.flows.request.CatalogueRequestBuilder;
-import fr.unice.polytech.si5.soa1.lab2.flows.utils.Endpoints;
+import fr.unice.polytech.si5.soa1.lab2.flows.processors.common.MultiplyWithQtyProcessor;
+import fr.unice.polytech.si5.soa1.lab2.flows.processors.common.OrderItemToItemRequest;
+import fr.unice.polytech.si5.soa1.lab2.flows.processors.common.SumExchangeListProcessor;
 import fr.unice.polytech.si5.soa1.lab2.flows.utils.Pair;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.processor.aggregate.AggregationStrategy;
+import org.apache.camel.processor.aggregate.GroupedExchangeAggregationStrategy;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +29,10 @@ public class Shopping3000OrderRoute extends RouteBuilder {
     private synchronized int getNextid() {
         return nextid++;
     }
+
+    private static Processor exclstsum = new SumExchangeListProcessor();
+    private static Processor itm2ctlgitmrqst = new OrderItemToItemRequest();
+    private static Processor mltplwthqty = new MultiplyWithQtyProcessor();
 
     public int startOrder() {
         int id = getNextid();
@@ -117,7 +126,7 @@ public class Shopping3000OrderRoute extends RouteBuilder {
                 .when(simple("${body} == true"))
                     .setBody(property("order_id"))
                     .bean(Shopping3000OrderRoute.class, "getOrder(${body})")
-                    .to(Endpoints.HANDLE_FULL_ORDER)
+                    .to(HANDLE_FULL_ORDER)
                     .setBody(constant(true))
                 .otherwise()
                     .setBody(constant(false))
@@ -128,13 +137,26 @@ public class Shopping3000OrderRoute extends RouteBuilder {
 
         from("direct:get_amount")
                 .log("get_amount")
-                .bean(Shopping3000OrderRoute.class, "getAmount(${body})")
+                //.bean(Shopping3000OrderRoute.class, "getAmount(${body})")
+                .to("direct:get_order")
+                .split(simple("${body.items}"))
+                .aggregationStrategy(new GroupedExchangeAggregationStrategy())
+                    .setProperty("qty", simple("${body.right}"))
+                    .setBody(simple("${body.left}"))
+                    .process(itm2ctlgitmrqst)
+                    .to(HANDLE_FULL_CATALOG_GET_ITEM)
+                    .setBody(simple("${body.price}"))
+                    .process(mltplwthqty)
+                .end()
+                .process(exclstsum)
                 .log("amount : ${body}")
         ;
 
+
+
         from("direct:get_order")
                 .bean(Shopping3000OrderRoute.class, "getOrder(${body})")
-                ;
+        ;
 
         from ("direct:register_order")
                 .bean(Shopping3000OrderRoute.class, "registerOrder(${body})")
