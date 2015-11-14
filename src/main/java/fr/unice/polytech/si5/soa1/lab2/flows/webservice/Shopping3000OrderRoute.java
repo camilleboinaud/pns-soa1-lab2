@@ -6,6 +6,8 @@ import fr.unice.polytech.si5.soa1.lab2.flows.business.OrderItem;
 import fr.unice.polytech.si5.soa1.lab2.flows.request.CatalogueRequestBuilder;
 import fr.unice.polytech.si5.soa1.lab2.flows.utils.Endpoints;
 import fr.unice.polytech.si5.soa1.lab2.flows.utils.Pair;
+import org.apache.camel.Exchange;
+import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 
 import java.util.HashMap;
@@ -58,6 +60,12 @@ public class Shopping3000OrderRoute extends RouteBuilder {
         return orders.get(orderId);
     }
 
+    public int registerOrder(Order order) {
+        int id = getNextid();
+        orders.put(id, order);
+
+        return id;
+    }
 
     @Override
     public void configure() throws Exception {
@@ -74,6 +82,10 @@ public class Shopping3000OrderRoute extends RouteBuilder {
                     .to("direct:validate_order")
                 .when(simple("${in.headers.operationName} == 'get_amount'"))
                     .to("direct:get_amount")
+                .when(simple("${in.headers.operationName} == 'get_order'"))
+                    .to("direct:get_order")
+                .when(simple("${in.headers.operationName} == 'register_order'"))
+                    .to("direct:register_order")
                 .otherwise()
                 .log("unexpected request in order route")
                     .stop()
@@ -110,6 +122,7 @@ public class Shopping3000OrderRoute extends RouteBuilder {
                 .otherwise()
                     .setBody(constant(false))
                 .end()
+                .setHeader("shop3000_order_id", property("order_id"))
                 .log("validated order : ${body}")
         ;
 
@@ -118,6 +131,14 @@ public class Shopping3000OrderRoute extends RouteBuilder {
                 .bean(Shopping3000OrderRoute.class, "getAmount(${body})")
                 .log("amount : ${body}")
         ;
+
+        from("direct:get_order")
+                .bean(Shopping3000OrderRoute.class, "getOrder(${body})")
+                ;
+
+        from ("direct:register_order")
+                .bean(Shopping3000OrderRoute.class, "registerOrder(${body})")
+                ;
 
     }
 
