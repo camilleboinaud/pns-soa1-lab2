@@ -42,4 +42,6 @@ public class Endpoints {
 
     public static final String PAY_ORDER_TO_MANUFACTURER = "activemq:payOrderToManufacturer";
 
+    public static final String SHOPPING3000_EMAIL_SERVICE = "smtp://smtp.googlemail.com:587?username=soa.shopping3000@gmail.com&password=polytech&mail.smtp.auth=true&mail.smtp.starttls.enable=true";
+
 }
