@@ -1,5 +1,6 @@
 package fr.unice.polytech.si5.soa1.lab2.flows;
 
+import fr.unice.polytech.si5.soa1.lab2.flows.processors.common.AddMetaIdProcessor;
 import fr.unice.polytech.si5.soa1.lab2.flows.processors.csv.Csv2Order;
 import fr.unice.polytech.si5.soa1.lab2.flows.processors.csv.FilterCsvByAddress;
 import org.apache.camel.Processor;
@@ -16,6 +17,7 @@ public class CSVHandlingProcess extends RouteBuilder{
 
     private static Processor groupCsv = new FilterCsvByAddress();
     private static Processor csv2order = new Csv2Order();
+    private static Processor addmetaid = new AddMetaIdProcessor();
 
     @Override
     public void configure() throws Exception {
@@ -38,6 +40,7 @@ public class CSVHandlingProcess extends RouteBuilder{
                 .to("direct:register_order")
                 .setHeader("shop3000_order_id", body())
                 .setBody(property("order"))
+                .process(addmetaid)
                 .log("registered order with id : ${headers.shop3000_order_id}")
                 .to(HANDLE_FULL_ORDER)
         ;

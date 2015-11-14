@@ -12,6 +12,7 @@ public class Order implements Serializable {
 
     private List<Pair<OrderItem, Integer>> items;
     private Customer customer;
+    private int id;
 
     public Order(){
         this.items = new ArrayList<Pair<OrderItem, Integer>>();
@@ -74,5 +75,13 @@ public class Order implements Serializable {
                 "items=" + items +
                 ", customer=" + customer +
                 '}';
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

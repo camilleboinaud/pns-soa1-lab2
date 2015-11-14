@@ -8,11 +8,10 @@ import fr.unice.polytech.si5.soa1.lab2.flows.business.OrderItem;
 import fr.unice.polytech.si5.soa1.lab2.flows.processors.common.MultiplyWithQtyProcessor;
 import fr.unice.polytech.si5.soa1.lab2.flows.processors.common.OrderItemToItemRequest;
 import fr.unice.polytech.si5.soa1.lab2.flows.processors.common.SumExchangeListProcessor;
+import fr.unice.polytech.si5.soa1.lab2.flows.processors.common.AddMetaIdProcessor;
 import fr.unice.polytech.si5.soa1.lab2.flows.utils.Pair;
-import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.processor.aggregate.AggregationStrategy;
 import org.apache.camel.processor.aggregate.GroupedExchangeAggregationStrategy;
 
 import java.util.HashMap;
@@ -33,6 +32,7 @@ public class Shopping3000OrderRoute extends RouteBuilder {
     private static Processor exclstsum = new SumExchangeListProcessor();
     private static Processor itm2ctlgitmrqst = new OrderItemToItemRequest();
     private static Processor mltplwthqty = new MultiplyWithQtyProcessor();
+    private static Processor addmetaid = new AddMetaIdProcessor();
 
     public int startOrder() {
         int id = getNextid();
@@ -118,20 +118,23 @@ public class Shopping3000OrderRoute extends RouteBuilder {
         ;
 
         from("direct:validate_order")
-                .log("validate_order")
+                .log("validate_order with id ${body}")
                 .setProperty("order_id", body())
+                .setHeader("shop3000_order_id", body())
                 .bean(Shopping3000OrderRoute.class, "validateOrder(${body})")
                 .log("validate order state : ${body}")
                 .choice()
                 .when(simple("${body} == true"))
                     .setBody(property("order_id"))
+                    .setHeader("shop3000_order_id", body())
                     .bean(Shopping3000OrderRoute.class, "getOrder(${body})")
+                    .process(addmetaid)
+                    .log("sending order with id ${headers.shop3000_order_id} to order route")
                     .to(HANDLE_FULL_ORDER)
                     .setBody(constant(true))
                 .otherwise()
                     .setBody(constant(false))
                 .end()
-                .setHeader("shop3000_order_id", property("order_id"))
                 .log("validated order : ${body}")
         ;
 
@@ -145,13 +148,12 @@ public class Shopping3000OrderRoute extends RouteBuilder {
                     .setBody(simple("${body.left}"))
                     .process(itm2ctlgitmrqst)
                     .to(HANDLE_FULL_CATALOG_GET_ITEM)
-                    .setBody(simple("${body.price}"))
+                .setBody(simple("${body.price}"))
                     .process(mltplwthqty)
                 .end()
                 .process(exclstsum)
                 .log("amount : ${body}")
         ;
-
 
 
         from("direct:get_order")
