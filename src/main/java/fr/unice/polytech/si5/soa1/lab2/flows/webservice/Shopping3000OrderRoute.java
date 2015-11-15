@@ -5,11 +5,10 @@ import static fr.unice.polytech.si5.soa1.lab2.flows.utils.Endpoints.*;
 import fr.unice.polytech.si5.soa1.lab2.flows.business.Customer;
 import fr.unice.polytech.si5.soa1.lab2.flows.business.Order;
 import fr.unice.polytech.si5.soa1.lab2.flows.business.OrderItem;
-import fr.unice.polytech.si5.soa1.lab2.flows.processors.common.AddMetaIdProcessor;
-import fr.unice.polytech.si5.soa1.lab2.flows.processors.common.MultiplyWithQtyProcessor;
-import fr.unice.polytech.si5.soa1.lab2.flows.processors.common.OrderItemToItemRequest;
-import fr.unice.polytech.si5.soa1.lab2.flows.processors.common.SumExchangeListProcessor;
+import fr.unice.polytech.si5.soa1.lab2.flows.processors.common.*;
+import fr.unice.polytech.si5.soa1.lab2.flows.request.Shopping3000RequestBuilder;
 import fr.unice.polytech.si5.soa1.lab2.flows.utils.Pair;
+import fr.unice.polytech.si5.soa1.lab2.flows.utils.Shopping3000Info;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.processor.aggregate.GroupedExchangeAggregationStrategy;
@@ -33,6 +32,8 @@ public class Shopping3000OrderRoute extends RouteBuilder {
     private static Processor itm2ctlgitmrqst = new OrderItemToItemRequest();
     private static Processor mltplwthqty = new MultiplyWithQtyProcessor();
     private static Processor addmetaid = new AddMetaIdProcessor();
+    private static Processor addDeliveryToOrderAmount = new AddDeliveryToOrderAMountProcessor();
+
 
     public int startOrder() {
         int id = getNextid();
@@ -139,6 +140,7 @@ public class Shopping3000OrderRoute extends RouteBuilder {
 
         from(GET_AMOUNT)
                 .to(GET_ORDER)
+                .setProperty("dstAddress", simple("${body.customer.address}"))
                 .split(simple("${body.items}"))
                 .aggregationStrategy(new GroupedExchangeAggregationStrategy())
                     .setProperty("qty", simple("${body.right}"))
@@ -149,6 +151,10 @@ public class Shopping3000OrderRoute extends RouteBuilder {
                     .process(mltplwthqty)
                 .end()
                 .process(exclstsum)
+                .setHeader("order_amount", body())
+                .bean(Shopping3000RequestBuilder.class, "buildDeliveryPriceRequest(${exchangeProperty.dstAddress})")
+                .to(SHOPPING_3000_DELIVERY_SERVICE)
+                .process(addDeliveryToOrderAmount)
                 .log("[ORDER n°${exchangeProperty.shop3000_order_id}] Get amount : ${body}")
         ;
 

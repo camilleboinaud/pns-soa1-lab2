@@ -14,7 +14,7 @@ public class Shopping3000MailRoute extends RouteBuilder {
                 .setHeader("subject", constant("Shopping3000 Order"))
                 .setHeader("to", simple("${body[0]}"))
                 .setBody(simple("${body[1]}"))
-                .to(SHOPPING3000_EMAIL_SERVICE)
+                .to(SHOPPING_3000_EMAIL_SERVICE)
                 .setBody(simple("true", Boolean.class))
         ;
 

@@ -29,7 +29,7 @@ public class Shopping3000DeliveryRoute extends RouteBuilder {
                 .choice()
                 .when(simple("${in.headers.operationName} == 'CalculateDeliveryPriceByAddresses'"))
                     .setBody(simple("${body[0]}"))
-                .log("calculate delivery price: ${body.left}  ${body.right}")
+                .log("Calculate delivery price")
                 .process(readDeliveryAddressesProcessor)
                 .to("direct:evaluateDeliveryPrice")
                 .otherwise()
