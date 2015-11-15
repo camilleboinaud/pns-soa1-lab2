@@ -57,15 +57,15 @@ This part will sum up features offered through public Shopping 3000 web service.
 
 Description of ordering service exposed by Shopping 3000 :
 
-| Method        | Parameters                                                   | Returns   | Specificities                                           |  
+| Method        | Parameters                                                   | Return    | Specificity                                           |  
 | --------------| -------------------------------------------------------------| ----------| --------------------------------------------------------|  
 | startOrder    |                                                              | `int`     | Required as first operation                             |  
 | addOrderItem  | `(int) order_id`, `(OrderItem) order_item`, `(int) quantity` | `void`    |                                                         |  
 | setCustomer   | `(int) order_id`, `(Customer) customer`                      | `void`    |                                                         |  
-| getAmount     | `(int) order_id`                                             | `double`  | Needs setCustomer beeing called once before             |  
-| validateOrder | `(int) order_id`                                             | `boolean` | Needs setCustomer beeing called once before             |  
+| getAmount     | `(int) order_id`                                             | `double`  | Needs setCustomer being called once before              |  
+| validateOrder | `(int) order_id`                                             | `boolean` | Needs setCustomer being called once before              |  
 | getOrder      | `(int) order_id`                                             | `Order`   |                                                         |  
-| registerOrder | `(Order) order`                                              | `int`     | Needs to be the only method called to complete an order | 
+| registerOrder | `(Order) order`                                              | `int`     | Register a full order but validate is still needed      | 
 
 
 #### 3.2.  Shopping 3000 catalogue service :
@@ -78,3 +78,13 @@ Description of catalogue service exposed by Shopping 3000 :
 | listAllItems |                                   | `Shopping3000CatalogItemList` |   
 | getItem      | `(Pair<Manufacturer,Integer>) id` |  `Shopping3000CatalogItem`    |   
 
+## 4.  Provided SoapUI scenario as test case : 
+
+The provided SoapUI project is connected to the catalog and the order services from shopping3000
+This scenario show how to make an order using the cart methods. An empty order is created and the order id is stored in a property.
+Some order are then added into the cart by calling the addOrderItem three times. 2 items from Minibo are added and 1 from Maximeuble.
+Each order item added has a quantity and an id stored in the test case property. This is a pretty large order.
+When all items are added, the customer is then registered to the order.
+A customer may want to check the amount included in the cart so we call getAmount to get the order price.
+This is not possible before because the transport fees may only be calculated when the customer address is known.
+After that, the order is processed and a confirmation email is sent to the email specified in the test case email property.
