@@ -70,7 +70,7 @@ Description of ordering service exposed by Shopping 3000 :
 
 #### 3.2.  Shopping 3000 catalogue service :
 
-Description of catalogue service exposed by Shopping 3000 :
+Description of catalog service exposed by Shopping 3000 :
 
 
 | Method       | Parameters                        | Returns                       |   
@@ -78,13 +78,16 @@ Description of catalogue service exposed by Shopping 3000 :
 | listAllItems |                                   | `Shopping3000CatalogItemList` |   
 | getItem      | `(Pair<Manufacturer,Integer>) id` |  `Shopping3000CatalogItem`    |   
 
+<br>
+
 ## 4.  Provided SoapUI scenario as test case : 
 
-The provided SoapUI project is connected to the catalog and the order services from shopping3000
-This scenario show how to make an order using the cart methods. An empty order is created and the order id is stored in a property.
-Some order are then added into the cart by calling the addOrderItem three times. 2 items from Minibo are added and 1 from Maximeuble.
-Each order item added has a quantity and an id stored in the test case property. This is a pretty large order.
-When all items are added, the customer is then registered to the order.
-A customer may want to check the amount included in the cart so we call getAmount to get the order price.
-This is not possible before because the transport fees may only be calculated when the customer address is known.
+The provided SoapUI project is connected to the catalog and the order services from Shopping 3000. This scenario shows how to make an order using cart's methods :
+
+* an empty order is created and the order id is stored in a property.
+* some items will be add into cart by calling the addOrderItem three times (2 items from Minibo are added and 1 from Maximeuble).
+* each order item added has a quantity and an id stored in the test case property (this is a pretty large order).
+* once all item has been add, we registered customer in the order.
+* a customer may wants to check the amount of cart so he will call getAmount to get the order price (this is not possible before because the transport fees may only be calculated when the customer address is known).
+
 After that, the order is processed and a confirmation email is sent to the email specified in the test case email property.
