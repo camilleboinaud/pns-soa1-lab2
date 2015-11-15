@@ -30,7 +30,7 @@ Service mix needs some specific features to be installed (due to Camel usage) in
 * camel-spring-ws
 * camel-mail
 
-In order to use services, you must build projects using `mvn package` command (for each services: minibo, maximeuble and shopping 3000). Then you need to copy your .war files into `{servicemix_path}/deploy`. 
+In order to use services, you must build projects using `mvn package` command (for each services: minibo, maximeuble and shopping 3000). Then you need to copy your .jar files into `{servicemix_path}/deploy`. 
  
 <br> 
 
