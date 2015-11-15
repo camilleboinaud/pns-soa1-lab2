@@ -12,7 +12,7 @@ public class ValidCreditCard implements Processor {
     public void process(Exchange exchange) throws Exception {
         CreditCard creditCard = exchange.getIn().getBody(CreditCard.class);
 
-        int number = Integer.parseInt(creditCard.getNumber());
+        long number = Long.parseLong(creditCard.getNumber());
         int csc = Integer.parseInt(creditCard.getCsc());
 
         if (creditCard.getValidity()!=null){
@@ -21,6 +21,7 @@ public class ValidCreditCard implements Processor {
                 return;
             }
         }
+
         exchange.getIn().setBody(false);
     }
 }

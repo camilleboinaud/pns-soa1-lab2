@@ -13,11 +13,12 @@ public class Shopping3000PaymentProcess extends RouteBuilder {
     public void configure() throws Exception {
 
         from(SHOPPING_3000_PAYMENT)
-                .setHeader("order", simple("${body}"))
+                .setProperty("order", simple("${body}"))
                 .setProperty("order_id", simple("${body.id}"))
                 .setBody(simple("${body.id}"))
                 .to(GET_AMOUNT)
                 .log("[ORDER n°${exchangeProperty.order_id}] Order amount : ${body}")
+                .log("buildPaymentRequest(${exchangeProperty.order.customer.creditcard}, ${body})")
                 .bean(Shopping3000RequestBuilder.class, "buildPaymentRequest(${exchangeProperty.order.customer.creditcard}, ${body})")
                 .to(SHOPPING_3000_BANK_SERVICE)
                 .choice()
