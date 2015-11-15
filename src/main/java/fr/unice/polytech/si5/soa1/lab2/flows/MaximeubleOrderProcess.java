@@ -1,6 +1,7 @@
 package fr.unice.polytech.si5.soa1.lab2.flows;
 
 import fr.unice.polytech.si5.soa1.lab2.flows.business.maximeuble.OrderItem;
+import fr.unice.polytech.si5.soa1.lab2.flows.business.maximeuble.OrderStatus;
 import fr.unice.polytech.si5.soa1.lab2.flows.business.shopping3000.Manufacturer;
 import fr.unice.polytech.si5.soa1.lab2.flows.processors.maximeuble.*;
 import fr.unice.polytech.si5.soa1.lab2.flows.processors.utils.ExchangeListToTemplateListProcessor;
@@ -39,18 +40,16 @@ public class MaximeubleOrderProcess extends RouteBuilder {
          * it into POJO.
          */
         from(GET_MAXIMEUBLE_PRODUCT)
-                .log("building product request for id : ${body}")
                 .bean(MaximeulbleOrderRequestBuilder.class, "buildMaximeubleProductRequest(${body})")
                 .to(MAXIMEUBLE_CATALOG_SERVICE)
                 .process(res2product)
-                .log("got product : ${body}")
         ;
 
         /**
          * Orchestrates order processing for Maximeuble customer
          */
         from(HANDLE_MAXIMEUBLE_ORDER)
-                .log("maximeuble order handler...")
+                .log("[ORDER n°${exchangeProperty.shop3000_order_id}] Maximeuble order handler...")
                 .setHeader("input_order", body())
                 .multicast(new GroupedExchangeAggregationStrategy())
                     .parallelProcessing()
@@ -58,9 +57,8 @@ public class MaximeubleOrderProcess extends RouteBuilder {
                     .to(MAKE_MAXIMEUBLE_ORDERREQUEST)
                 .end()
                 .process(joinParams)
-                .log("multicast output : ${body}")
                 .to(MAKE_MAXIMEUBLE_ORDER)
-                .log("Maximeuble order made with id : ${body}")
+                .log("[ORDER n°${exchangeProperty.shop3000_order_id}] Maximeuble order made with id : ${body}")
         ;
 
         /**
@@ -68,53 +66,52 @@ public class MaximeubleOrderProcess extends RouteBuilder {
          */
         from (MAKE_MAXIMEUBLE_CLIENT)
                 .process(data2client)
-                .log("route output : ${body}")
         ;
 
         /**
          * Build an order
          */
         from (MAKE_MAXIMEUBLE_ORDER)
-                .log("make order : ${body}")
+                .log("[ORDER n°${exchangeProperty.shop3000_order_id}] Make order : ${body}")
                 .bean(MaximeulbleOrderRequestBuilder.class, "buildMaximeubleMakeOrderRequest(${body})")
-                .log("request : ${body}")
                 .to(MAXIMEUBLE_ORDER_SERVICE)
-                .log("order service result : ${body}")
                 .process(res2id)
+                .setProperty("maximeuble_order_id", body())
+                .setHeader("order_status", constant(OrderStatus.PRODUCING))
+                .to("activemq:change_maximeuble_order_status")
+
         ;
+
+        from("activemq:change_maximeuble_order_status")
+                .bean(MaximeulbleOrderRequestBuilder.class, "buildMaximeubleChangeStatusRequest(${body},${headers.new_status})")
+                .to(MAXIMEUBLE_ORDER_SERVICE)
+                ;
 
         /**
          * Flow used to build an order request
          */
         from(MAKE_MAXIMEUBLE_ORDERREQUEST)
-                .log("make maximeuble order request")
+                .log("[ORDER n°${exchangeProperty.shop3000_order_id}] Make maximeuble order request")
                 .split(simple("body.items"))
                     .aggregationStrategy(new GroupedExchangeAggregationStrategy())
                     .setHeader("item", body())
                     .setBody(simple("${body.left.manufacturerId}"))
                     .to(GET_MAXIMEUBLE_PRODUCT)
-                    .log("product : ${body}")
                     .process(product2orderitem)
-                    .log("orderitem : ${body}")
                 .end()
-                .log("split output : ${body}")
                 .setHeader("manufacturer", constant(Manufacturer.MAXIMEUBLE))
                 .process(exclst2ordritmlst)
-                .log("all products : ${body}")
                 .process(prodLst2ordrReq)
-                .log("route output : ${body}")
         ;
 
         /**
          * Flow used to process an order payment for Maximeuble.
          */
         from(MAXIMEUBLE_ORDER_PAYMENT)
-                .log("maximeuble payment : ${body.right}")
+                .log("[ORDER n°${exchangeProperty.shop3000_order_id}] Maximeuble payment : ${body.right}")
                 .bean(MaximeulbleOrderRequestBuilder.class, "buildFetchOrderRequest(${body.right})")
-                .log("call to service order_request : ${body}")
                 .to(MAXIMEUBLE_ORDER_SERVICE)
                 .process(catchOrderRequest)
-                .log("order_request : ${body}")
                 .bean(MaximeulbleOrderRequestBuilder.class, "buildPaymentRequest(${body})")
                 .to(MAXIMEUBLE_BILLING_SERVICE)
         ;

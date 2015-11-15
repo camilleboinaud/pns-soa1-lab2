@@ -7,9 +7,9 @@ public class Endpoints {
 
     public static final String CSV_INPUT_DIRECTORY = "file:camel/input";
 
-    public static final String SHOPPING_3000_PAYMENT = "activemq:handleOrder";
+    public static final String SHOPPING_3000_PAYMENT = "activemq:shopping3000Payment?transferExchange=true";
 
-    public static final String HANDLE_FULL_ORDER = "activemq:handleOrder";
+    public static final String HANDLE_FULL_ORDER = "activemq:handleOrder?transferExchange=true";
     public static final String HANDLE_MINIBO_ORDER = "direct:handleMiniboOrder";
     public static final String HANDLE_MAXIMEUBLE_ORDER = "direct:handleMaxiMeubleOrder";
 
@@ -34,17 +34,18 @@ public class Endpoints {
     public static final String MAKE_MAXIMEUBLE_CLIENT = "direct:makeMaximeubleClient";
     public static final String GET_MAXIMEUBLE_PRODUCT = "direct:getMaximeubleProduct";
     public static final String MAKE_MAXIMEUBLE_ORDER = "direct:makeMaximeubleOrder";
-    public static final String MAXIMEUBLE_ORDER_PAYMENT = "activemq:maximeubleOrderPayment";
+    public static final String MAXIMEUBLE_ORDER_PAYMENT = "activemq:maximeubleOrderPayment?transferExchange=true";
 
     public static final String START_MINIBO_ORDER = "direct:startMiniboOrder";
-    public static final String MINIBO_ADD_ITEM_TO_ORDER = "activemq:miniboAddItemToOrder";
-    public static final String MINIBO_ORDER_PAYMENT = "activemq:miniboOrderPayment";
+    public static final String MINIBO_ADD_ITEM_TO_ORDER = "activemq:miniboAddItemToOrder?transferExchange=true";
+    public static final String MINIBO_ORDER_PAYMENT = "activemq:miniboOrderPayment?transferExchange=true";
 
-    public static final String PAY_ORDER_TO_MANUFACTURER = "activemq:payOrderToManufacturer";
+    public static final String PAY_ORDER_TO_MANUFACTURER = "activemq:payOrderToManufacturer?transferExchange=true";
 
     public static final String SHOPPING3000_EMAIL_SERVICE = "smtp://smtp.googlemail.com:587?username=soa.shopping3000@gmail.com&password=polytech&mail.smtp.auth=true&mail.smtp.starttls.enable=true";
+    public static final String SHOPPING_3000_BANK_SERVICE = "spring-ws://" + GEN_SERVICE + "cxf/Shopping3000BankService";
 
-    public static final String SEND_CONFIRMATION_EMAIL = "activemq:send_confirmation_email";
+    public static final String SEND_CONFIRMATION_EMAIL = "activemq:send_confirmation_email?transferExchange=true";
 
     public static final String ORDER_SERVICE_INTERCEPTOR = "cxf:/Shopping3000OrderService?serviceClass=fr.unice.polytech.si5.soa1.lab2.flows.webservice.Shopping3000OrderService";
 

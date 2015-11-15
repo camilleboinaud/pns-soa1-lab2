@@ -1,0 +1,2 @@
+mvn clean install;
+cp ~/Documents/pns/si5/soa-1/lab-2/pns-soa1-lab2/target/shopping3000-1.0.jar ~/Documents/pns/si5/soa-1/tools/service-mix/apache-servicemix-6.0.0/deploy/

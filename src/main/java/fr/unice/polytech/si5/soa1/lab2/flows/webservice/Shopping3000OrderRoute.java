@@ -5,10 +5,10 @@ import static fr.unice.polytech.si5.soa1.lab2.flows.utils.Endpoints.*;
 import fr.unice.polytech.si5.soa1.lab2.flows.business.Customer;
 import fr.unice.polytech.si5.soa1.lab2.flows.business.Order;
 import fr.unice.polytech.si5.soa1.lab2.flows.business.OrderItem;
+import fr.unice.polytech.si5.soa1.lab2.flows.processors.common.AddMetaIdProcessor;
 import fr.unice.polytech.si5.soa1.lab2.flows.processors.common.MultiplyWithQtyProcessor;
 import fr.unice.polytech.si5.soa1.lab2.flows.processors.common.OrderItemToItemRequest;
 import fr.unice.polytech.si5.soa1.lab2.flows.processors.common.SumExchangeListProcessor;
-import fr.unice.polytech.si5.soa1.lab2.flows.processors.common.AddMetaIdProcessor;
 import fr.unice.polytech.si5.soa1.lab2.flows.utils.Pair;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
@@ -96,15 +96,15 @@ public class Shopping3000OrderRoute extends RouteBuilder {
                 .when(simple("${in.headers.operationName} == 'register_order'"))
                     .to("direct:register_order")
                 .otherwise()
-                .log("unexpected request in order route")
+                .log("### Unexpected request in order route")
                     .stop()
                 .endChoice()
         ;
 
         from(START_ORDER)
-            .log("start_order")
+            .log("### Start_order")
             .bean(Shopping3000OrderRoute.class, "startOrder()")
-            .log("set order id : ${body}")
+            .log("[ORDER n°${body}] Set order id : ${body}")
         ;
 
         from(ADD_ORDER_ITEM)
@@ -118,50 +118,50 @@ public class Shopping3000OrderRoute extends RouteBuilder {
         ;
 
         from(VALIDATE_ORDER)
-                .log("validate_order with id ${body}")
+                .log("[ORDER n°${exchangeProperty.shop3000_order_id}] Validate_order with id ${body}")
                 .setProperty("order_id", body())
                 .setHeader("shop3000_order_id", body())
                 .bean(Shopping3000OrderRoute.class, "validateOrder(${body})")
-                .log("validate order state : ${body}")
                 .choice()
                 .when(simple("${body} == true"))
                     .setBody(property("order_id"))
                     .setHeader("shop3000_order_id", body())
                     .bean(Shopping3000OrderRoute.class, "getOrder(${body})")
                     .process(addmetaid)
-                    .log("sending order with id ${headers.shop3000_order_id} to order route")
-                    .to(HANDLE_FULL_ORDER)
+                    .log("[ORDER n°${exchangeProperty.shop3000_order_id}] Sending order to order processing route")
+                    .to(SHOPPING_3000_PAYMENT)
                     .setBody(constant(true))
                 .otherwise()
                     .setBody(constant(false))
                 .end()
-                .log("validated order : ${body}")
+                .log("[ORDER n°${exchangeProperty.shop3000_order_id}] Validated order : ${body}")
         ;
 
         from(GET_AMOUNT)
-                .log("get_amount")
-                .to("direct:get_order")
+                .to(GET_ORDER)
                 .split(simple("${body.items}"))
                 .aggregationStrategy(new GroupedExchangeAggregationStrategy())
                     .setProperty("qty", simple("${body.right}"))
                     .setBody(simple("${body.left}"))
                     .process(itm2ctlgitmrqst)
                     .to(HANDLE_FULL_CATALOG_GET_ITEM)
-                .setBody(simple("${body.price}"))
+                    .setBody(simple("${body.price}"))
                     .process(mltplwthqty)
                 .end()
                 .process(exclstsum)
-                .log("amount : ${body}")
+                .log("[ORDER n°${exchangeProperty.shop3000_order_id}] Get amount : ${body}")
         ;
 
 
         from(GET_ORDER)
                 .bean(Shopping3000OrderRoute.class, "getOrder(${body})")
+                .end()
         ;
 
         from (REGISTER_ORDER)
                 .bean(Shopping3000OrderRoute.class, "registerOrder(${body})")
-                ;
+                .end()
+        ;
 
     }
 

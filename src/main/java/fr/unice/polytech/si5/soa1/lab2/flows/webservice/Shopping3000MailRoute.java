@@ -10,12 +10,11 @@ public class Shopping3000MailRoute extends RouteBuilder {
     public void configure() throws Exception {
 
         from("activemq:sendEmail")
-                .log("address:${body[0]}  message:${body[1]}")
+                .log("Email | address:${body[0]}  message:${body[1]}")
                 .setHeader("subject", constant("Shopping3000 Order"))
                 .setHeader("to", simple("${body[0]}"))
                 .setBody(simple("${body[1]}"))
                 .to(SHOPPING3000_EMAIL_SERVICE)
-                .log("after sending email")
                 .setBody(simple("true", Boolean.class))
         ;
 

@@ -13,9 +13,8 @@ public class Shopping3000BankRoute extends RouteBuilder {
     public void configure() throws Exception {
 
         from("direct:payByCreditCard")
-            .log("pay by credit card ${body[0]}")
+            .log("Order payed with credit card : ${body[0]}")
             .process(validCreditCard)
-            .log("valid Result: ${body}")
         ;
 
         from("cxf:/Shopping3000BankService?serviceClass=fr.unice.polytech.si5.soa1.lab2.flows.webservice.Shopping3000BankService")

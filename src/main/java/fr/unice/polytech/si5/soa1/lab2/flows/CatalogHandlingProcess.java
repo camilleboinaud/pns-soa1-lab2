@@ -27,7 +27,6 @@ public class CatalogHandlingProcess extends RouteBuilder {
          * customer's services.
          */
         from(HANDLE_FULL_CATALOG_GET_ITEM)
-                .log("choice item ${body}")
                 .choice()
                     .when(simple("${body.left} == ${type:fr.unice.polytech.si5.soa1.lab2.flows.business.shopping3000.Manufacturer.MINIBO}"))
                         .to(HANDLE_MINIBO_CATALOG_GET_ITEM)
@@ -46,43 +45,36 @@ public class CatalogHandlingProcess extends RouteBuilder {
          * to customer's services.
          */
         from("direct:badId")
-                .log("    Bad ID for catalog item ${body.left}, ending here.")
+                .log("Bad ID for catalog item ${body.left}, ending here.")
         ;
 
         /**
          * Handle full catalog lists from all customers' services
          */
         from(HANDLE_FULL_CATALOG_LIST)
-                .log("START multicast list item for each manufacturer")
                 .multicast()
                     .aggregationStrategy(new CatalogListAggregationStrategy())
                     .parallelProcessing()
                     .to(HANDLE_MINIBO_CATALOG_LIST)
                     .to(HANDLE_MAXIMEUBLE_CATALOG_LIST)
                 .end()
-                .log("END multicast list item for each manufacturer")
         ;
 
         from(HANDLE_MINIBO_CATALOG_LIST)
-                .log("list all catalog in minibo")
                 .setHeader("manufacturer", constant("MINIBO"))
                 .bean(CatalogueRequestBuilder.class, "buildCatalogListRequest(${header.manufacturer})")
                 .to(MINIBO_CATALOG_SERVICE)
-                .log("result get from minibo")
                 .process(ItemList2CatalogItemListTranslator.miniboItemList2CatalogListItem)
         ;
 
         from(HANDLE_MAXIMEUBLE_CATALOG_LIST)
-                .log("list all catalog in maximeuble")
                 .setHeader("manufacturer", constant("MAXIMEUBLE"))
                 .bean(CatalogueRequestBuilder.class, "buildCatalogListRequest(${header.manufacturer})")
                 .to(MAXIMEUBLE_CATALOG_SERVICE)
-                .log("result get from maximeuble")
                 .process(ItemList2CatalogItemListTranslator.maximeubleItemList2CatalogListItem)
         ;
 
         from(HANDLE_MAXIMEUBLE_CATALOG_GET_ITEM)
-                .log("start getting maximeuble item")
                 .setBody(simple("${body.right}"))
                 .to(GET_MAXIMEUBLE_PRODUCT)
         ;
@@ -92,10 +84,8 @@ public class CatalogHandlingProcess extends RouteBuilder {
          * transform result into POJO.
          */
         from(HANDLE_MINIBO_CATALOG_GET_ITEM)
-                .log("get minibo item")
                 .bean(CatalogueRequestBuilder.class, "buildCatalogGetItemRequest(${body.left},${body.right})")
                 .to(MINIBO_CATALOG_SERVICE)
-                .log("result get item from minibo")
                 .process(result2item)
         ;
 

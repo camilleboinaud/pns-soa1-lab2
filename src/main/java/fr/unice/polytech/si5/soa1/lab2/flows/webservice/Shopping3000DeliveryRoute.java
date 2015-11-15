@@ -18,7 +18,7 @@ public class Shopping3000DeliveryRoute extends RouteBuilder {
 
 
         from("direct:badDeliveryRequest")
-                .log("This is a bad request!")
+                .log("This is a bad delivery request!")
         ;
 
         from("direct:evaluateDeliveryPrice")
