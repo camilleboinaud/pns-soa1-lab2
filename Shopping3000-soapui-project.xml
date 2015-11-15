@@ -1,0 +1,586 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="825414a7-42e6-454c-b50d-1d2ba7d7583d" activeEnvironment="Default" name="Shopping3000" resourceRoot="" soapui-version="5.2.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" id="306e7d8f-beab-486e-94ac-8c6bec5dcecd" wsaVersion="NONE" name="Shopping3000OrderServiceSoapBinding" type="wsdl" bindingName="{http://webservice.flows.lab2.soa1.si5.polytech.unice.fr/}Shopping3000OrderServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:8181/cxf/Shopping3000OrderService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:8181/cxf/Shopping3000OrderService?wsdl"><con:part><con:url>http://localhost:8181/cxf/Shopping3000OrderService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="Shopping3000OrderService" targetNamespace="http://webservice.flows.lab2.soa1.si5.polytech.unice.fr/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://webservice.flows.lab2.soa1.si5.polytech.unice.fr/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http">
+  <wsdl:types>
+    <xs:schema elementFormDefault="unqualified" targetNamespace="http://webservice.flows.lab2.soa1.si5.polytech.unice.fr/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="add_order_item" type="tns:add_order_item"/>
+      <xs:element name="add_order_itemResponse" type="tns:add_order_itemResponse"/>
+      <xs:element name="get_amount" type="tns:get_amount"/>
+      <xs:element name="get_amountResponse" type="tns:get_amountResponse"/>
+      <xs:element name="get_order" type="tns:get_order"/>
+      <xs:element name="get_orderResponse" type="tns:get_orderResponse"/>
+      <xs:element name="register_order" type="tns:register_order"/>
+      <xs:element name="register_orderResponse" type="tns:register_orderResponse"/>
+      <xs:element name="set_customer" type="tns:set_customer"/>
+      <xs:element name="set_customerResponse" type="tns:set_customerResponse"/>
+      <xs:element name="start_order" type="tns:start_order"/>
+      <xs:element name="start_orderResponse" type="tns:start_orderResponse"/>
+      <xs:element name="validate_order" type="tns:validate_order"/>
+      <xs:element name="validate_orderResponse" type="tns:validate_orderResponse"/>
+      <xs:complexType name="get_order">
+        <xs:sequence>
+          <xs:element name="order_id" type="xs:int"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="get_orderResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="order" type="tns:order"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="order">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="customer" type="tns:customer"/>
+          <xs:element name="id" type="xs:int"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="items" nillable="true" type="tns:pair"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="customer">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="address" type="tns:address"/>
+          <xs:element minOccurs="0" name="creditcard" type="tns:creditCard"/>
+          <xs:element minOccurs="0" name="email" type="xs:string"/>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="address">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="address" type="xs:string"/>
+          <xs:element minOccurs="0" name="city" type="xs:string"/>
+          <xs:element minOccurs="0" name="zipcode" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="creditCard">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="csc" type="xs:string"/>
+          <xs:element minOccurs="0" name="number" type="xs:string"/>
+          <xs:element minOccurs="0" name="validity" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="pair">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="left" type="xs:anyType"/>
+          <xs:element minOccurs="0" name="right" type="xs:anyType"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="orderItem">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="manufacturer" type="tns:manufacturer"/>
+          <xs:element name="manufacturerId" type="xs:int"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="register_order">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="order" type="tns:order"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="register_orderResponse">
+        <xs:sequence>
+          <xs:element name="order_id" type="xs:int"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="validate_order">
+        <xs:sequence>
+          <xs:element name="order_id" type="xs:int"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="validate_orderResponse">
+        <xs:sequence>
+          <xs:element name="success" type="xs:boolean"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="get_amount">
+        <xs:sequence>
+          <xs:element name="order_id" type="xs:int"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="get_amountResponse">
+        <xs:sequence>
+          <xs:element name="amount" type="xs:double"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="set_customer">
+        <xs:sequence>
+          <xs:element name="order_id" type="xs:int"/>
+          <xs:element minOccurs="0" name="customer" type="tns:customer"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="set_customerResponse">
+        <xs:sequence/>
+      </xs:complexType>
+      <xs:complexType name="add_order_item">
+        <xs:sequence>
+          <xs:element name="order_id" type="xs:int"/>
+          <xs:element minOccurs="0" name="order_item" type="tns:orderItem"/>
+          <xs:element name="qty" type="xs:int"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="add_order_itemResponse">
+        <xs:sequence/>
+      </xs:complexType>
+      <xs:complexType name="start_order">
+        <xs:sequence/>
+      </xs:complexType>
+      <xs:complexType name="start_orderResponse">
+        <xs:sequence>
+          <xs:element name="order_id" type="xs:int"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="manufacturer">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="MINIBO"/>
+          <xs:enumeration value="MAXIMEUBLE"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="register_order">
+    <wsdl:part element="tns:register_order" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="set_customerResponse">
+    <wsdl:part element="tns:set_customerResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="add_order_itemResponse">
+    <wsdl:part element="tns:add_order_itemResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="get_amount">
+    <wsdl:part element="tns:get_amount" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="get_amountResponse">
+    <wsdl:part element="tns:get_amountResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="validate_orderResponse">
+    <wsdl:part element="tns:validate_orderResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="get_order">
+    <wsdl:part element="tns:get_order" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="start_orderResponse">
+    <wsdl:part element="tns:start_orderResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="get_orderResponse">
+    <wsdl:part element="tns:get_orderResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="validate_order">
+    <wsdl:part element="tns:validate_order" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="set_customer">
+    <wsdl:part element="tns:set_customer" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="add_order_item">
+    <wsdl:part element="tns:add_order_item" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="start_order">
+    <wsdl:part element="tns:start_order" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="register_orderResponse">
+    <wsdl:part element="tns:register_orderResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="Shopping3000OrderService">
+    <wsdl:operation name="get_order">
+      <wsdl:input message="tns:get_order" name="get_order"></wsdl:input>
+      <wsdl:output message="tns:get_orderResponse" name="get_orderResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="register_order">
+      <wsdl:input message="tns:register_order" name="register_order"></wsdl:input>
+      <wsdl:output message="tns:register_orderResponse" name="register_orderResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="validate_order">
+      <wsdl:input message="tns:validate_order" name="validate_order"></wsdl:input>
+      <wsdl:output message="tns:validate_orderResponse" name="validate_orderResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_amount">
+      <wsdl:input message="tns:get_amount" name="get_amount"></wsdl:input>
+      <wsdl:output message="tns:get_amountResponse" name="get_amountResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="set_customer">
+      <wsdl:input message="tns:set_customer" name="set_customer"></wsdl:input>
+      <wsdl:output message="tns:set_customerResponse" name="set_customerResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="add_order_item">
+      <wsdl:input message="tns:add_order_item" name="add_order_item"></wsdl:input>
+      <wsdl:output message="tns:add_order_itemResponse" name="add_order_itemResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="start_order">
+      <wsdl:input message="tns:start_order" name="start_order"></wsdl:input>
+      <wsdl:output message="tns:start_orderResponse" name="start_orderResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="Shopping3000OrderServiceSoapBinding" type="tns:Shopping3000OrderService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="get_order">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="get_order">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="get_orderResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="register_order">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="register_order">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="register_orderResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="validate_order">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="validate_order">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="validate_orderResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_amount">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="get_amount">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="get_amountResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="set_customer">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="set_customer">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="set_customerResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="add_order_item">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="add_order_item">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="add_order_itemResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="start_order">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="start_order">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="start_orderResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Shopping3000OrderService">
+    <wsdl:port binding="tns:Shopping3000OrderServiceSoapBinding" name="Shopping3000OrderServicePort">
+      <soap:address location="http://localhost:8181/cxf/Shopping3000OrderService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8181/cxf/Shopping3000OrderService</con:endpoint></con:endpoints><con:operation id="8dc0bca7-0c02-4394-8519-04887ec16f3f" isOneWay="false" action="" name="add_order_item" bindingOperationName="add_order_item" type="Request-Response" outputName="add_order_itemResponse" inputName="add_order_item" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="48f64759-ad28-4c67-b7d7-1f821e4f7e0a" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8181/cxf/Shopping3000OrderService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://webservice.flows.lab2.soa1.si5.polytech.unice.fr/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <web:add_order_item>
+         <order_id>?</order_id>
+         <!--Optional:-->
+         <order_item>
+            <!--Optional:-->
+            <manufacturer>?</manufacturer>
+            <manufacturerId>?</manufacturerId>
+         </order_item>
+         <qty>?</qty>
+      </web:add_order_item>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://webservice.flows.lab2.soa1.si5.polytech.unice.fr/Shopping3000OrderService/add_order_item"/></con:call></con:operation><con:operation id="c386a2d9-74bc-4fe0-b1c6-bebc0a106191" isOneWay="false" action="" name="get_amount" bindingOperationName="get_amount" type="Request-Response" outputName="get_amountResponse" inputName="get_amount" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="573597e2-ad72-4c8a-bc5e-592f2bc82890" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8181/cxf/Shopping3000OrderService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://webservice.flows.lab2.soa1.si5.polytech.unice.fr/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <web:get_amount>
+         <order_id>?</order_id>
+      </web:get_amount>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://webservice.flows.lab2.soa1.si5.polytech.unice.fr/Shopping3000OrderService/get_amount"/></con:call></con:operation><con:operation id="3fc3c3ff-0e63-4c99-aa47-57e3dab03a17" isOneWay="false" action="" name="get_order" bindingOperationName="get_order" type="Request-Response" outputName="get_orderResponse" inputName="get_order" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="15d05f33-3279-4f5b-a5fd-18a61b443458" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8181/cxf/Shopping3000OrderService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://webservice.flows.lab2.soa1.si5.polytech.unice.fr/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <web:get_order>
+         <order_id>?</order_id>
+      </web:get_order>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://webservice.flows.lab2.soa1.si5.polytech.unice.fr/Shopping3000OrderService/get_order"/></con:call></con:operation><con:operation id="3cde236c-04ec-4905-bd9d-9841a9c8a00d" isOneWay="false" action="" name="set_customer" bindingOperationName="set_customer" type="Request-Response" outputName="set_customerResponse" inputName="set_customer" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="e7d5cecf-57d6-4f84-b2b8-2754ed2b8c17" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8181/cxf/Shopping3000OrderService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://webservice.flows.lab2.soa1.si5.polytech.unice.fr/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <web:set_customer>
+         <order_id>?</order_id>
+         <!--Optional:-->
+         <customer>
+            <!--Optional:-->
+            <address>
+               <!--Optional:-->
+               <address>?</address>
+               <!--Optional:-->
+               <city>?</city>
+               <!--Optional:-->
+               <zipcode>?</zipcode>
+            </address>
+            <!--Optional:-->
+            <creditcard>
+               <!--Optional:-->
+               <csc>?</csc>
+               <!--Optional:-->
+               <number>?</number>
+               <!--Optional:-->
+               <validity>?</validity>
+            </creditcard>
+            <!--Optional:-->
+            <email>?</email>
+            <!--Optional:-->
+            <name>?</name>
+         </customer>
+      </web:set_customer>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://webservice.flows.lab2.soa1.si5.polytech.unice.fr/Shopping3000OrderService/set_customer"/></con:call></con:operation><con:operation id="fff14f61-87aa-49fa-bdbb-a7b98e1e18c2" isOneWay="false" action="" name="start_order" bindingOperationName="start_order" type="Request-Response" outputName="start_orderResponse" inputName="start_order" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="09100f9f-22b4-48a5-a584-6a39d959c268" name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8181/cxf/Shopping3000OrderService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://webservice.flows.lab2.soa1.si5.polytech.unice.fr/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <web:start_order/>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://webservice.flows.lab2.soa1.si5.polytech.unice.fr/Shopping3000OrderService/start_order"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation id="43577123-a3b2-49d9-87db-fab162239601" isOneWay="false" action="" name="validate_order" bindingOperationName="validate_order" type="Request-Response" outputName="validate_orderResponse" inputName="validate_order" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="96af10dd-7504-4478-abb9-43edc9f333df" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8181/cxf/Shopping3000OrderService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://webservice.flows.lab2.soa1.si5.polytech.unice.fr/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <web:validate_order>
+         <order_id>?</order_id>
+      </web:validate_order>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://webservice.flows.lab2.soa1.si5.polytech.unice.fr/Shopping3000OrderService/validate_order"/></con:call></con:operation><con:operation id="4066a22a-5bed-42da-aba8-fd79b3ca1c08" isOneWay="false" action="" name="register_order" bindingOperationName="register_order" type="Request-Response" outputName="register_orderResponse" inputName="register_order" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="d5b71144-c737-45a4-9636-c7da8a46b6c8" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8181/cxf/Shopping3000OrderService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://webservice.flows.lab2.soa1.si5.polytech.unice.fr/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <web:register_order>
+         <!--Optional:-->
+         <order>
+            <!--Optional:-->
+            <customer>
+               <!--Optional:-->
+               <address>
+                  <!--Optional:-->
+                  <address>?</address>
+                  <!--Optional:-->
+                  <city>?</city>
+                  <!--Optional:-->
+                  <zipcode>?</zipcode>
+               </address>
+               <!--Optional:-->
+               <creditcard>
+                  <!--Optional:-->
+                  <csc>?</csc>
+                  <!--Optional:-->
+                  <number>?</number>
+                  <!--Optional:-->
+                  <validity>?</validity>
+               </creditcard>
+               <!--Optional:-->
+               <email>?</email>
+               <!--Optional:-->
+               <name>?</name>
+            </customer>
+            <id>?</id>
+            <!--Zero or more repetitions:-->
+            <items>
+               <!--Optional:-->
+               <left>?</left>
+               <!--Optional:-->
+               <right>?</right>
+            </items>
+         </order>
+      </web:register_order>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://webservice.flows.lab2.soa1.si5.polytech.unice.fr/Shopping3000OrderService/register_order"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" id="a0eca27e-ce50-4a54-8c6e-9c072fc297d3" wsaVersion="NONE" name="Shopping3000CatalogServiceSoapBinding" type="wsdl" bindingName="{http://webservice.flows.lab2.soa1.si5.polytech.unice.fr/}Shopping3000CatalogServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:8181/cxf/Shopping3000CatalogService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:8181/cxf/Shopping3000CatalogService?wsdl"><con:part><con:url>http://localhost:8181/cxf/Shopping3000CatalogService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="Shopping3000CatalogService" targetNamespace="http://webservice.flows.lab2.soa1.si5.polytech.unice.fr/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://webservice.flows.lab2.soa1.si5.polytech.unice.fr/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http">
+  <wsdl:types>
+    <xs:schema elementFormDefault="unqualified" targetNamespace="http://webservice.flows.lab2.soa1.si5.polytech.unice.fr/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="CatalogGetItem" type="tns:CatalogGetItem"/>
+      <xs:element name="CatalogGetItemResponse" type="tns:CatalogGetItemResponse"/>
+      <xs:element name="CatalogListAllItems" type="tns:CatalogListAllItems"/>
+      <xs:element name="CatalogListAllItemsResponse" type="tns:CatalogListAllItemsResponse"/>
+      <xs:complexType name="CatalogListAllItems">
+        <xs:sequence/>
+      </xs:complexType>
+      <xs:complexType name="CatalogListAllItemsResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="listItems" type="tns:shopping3000CatalogItemList"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="shopping3000CatalogItemList">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="item" type="tns:Shopping3000CatalogItem"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Shopping3000CatalogItem">
+        <xs:sequence>
+          <xs:element name="description" type="xs:string"/>
+          <xs:element name="id" type="tns:pair"/>
+          <xs:element name="name" type="xs:string"/>
+          <xs:element name="price" type="xs:double"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="pair">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="left" type="xs:anyType"/>
+          <xs:element minOccurs="0" name="right" type="xs:anyType"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CatalogGetItem">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Shopping3000ID" type="tns:pair"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CatalogGetItemResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="item" type="tns:Shopping3000CatalogItem"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="manufacturer">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="MINIBO"/>
+          <xs:enumeration value="MAXIMEUBLE"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="CatalogListAllItemsResponse">
+    <wsdl:part element="tns:CatalogListAllItemsResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="CatalogGetItem">
+    <wsdl:part element="tns:CatalogGetItem" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="CatalogGetItemResponse">
+    <wsdl:part element="tns:CatalogGetItemResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="CatalogListAllItems">
+    <wsdl:part element="tns:CatalogListAllItems" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="Shopping3000CatalogService">
+    <wsdl:operation name="CatalogListAllItems">
+      <wsdl:input message="tns:CatalogListAllItems" name="CatalogListAllItems"></wsdl:input>
+      <wsdl:output message="tns:CatalogListAllItemsResponse" name="CatalogListAllItemsResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CatalogGetItem">
+      <wsdl:input message="tns:CatalogGetItem" name="CatalogGetItem"></wsdl:input>
+      <wsdl:output message="tns:CatalogGetItemResponse" name="CatalogGetItemResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="Shopping3000CatalogServiceSoapBinding" type="tns:Shopping3000CatalogService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="CatalogListAllItems">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="CatalogListAllItems">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="CatalogListAllItemsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CatalogGetItem">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="CatalogGetItem">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="CatalogGetItemResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Shopping3000CatalogService">
+    <wsdl:port binding="tns:Shopping3000CatalogServiceSoapBinding" name="Shopping3000CatalogServicePort">
+      <soap:address location="http://localhost:8181/cxf/Shopping3000CatalogService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8181/cxf/Shopping3000CatalogService</con:endpoint></con:endpoints><con:operation id="fbe2bcb3-9be9-40f6-8db4-61a58174f39d" isOneWay="false" action="" name="CatalogGetItem" bindingOperationName="CatalogGetItem" type="Request-Response" outputName="CatalogGetItemResponse" inputName="CatalogGetItem" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="bc4fc32c-e49d-42b2-8974-d30ecc848378" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8181/cxf/Shopping3000CatalogService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://webservice.flows.lab2.soa1.si5.polytech.unice.fr/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <web:CatalogGetItem>
+         <!--Optional:-->
+         <Shopping3000ID>
+            <!--Optional:-->
+            <left>?</left>
+            <!--Optional:-->
+            <right>?</right>
+         </Shopping3000ID>
+      </web:CatalogGetItem>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://webservice.flows.lab2.soa1.si5.polytech.unice.fr/Shopping3000CatalogService/CatalogGetItem"/></con:call></con:operation><con:operation id="c4e70d1e-3e4a-4c9d-b0e7-0b73194f74f3" isOneWay="false" action="" name="CatalogListAllItems" bindingOperationName="CatalogListAllItems" type="Request-Response" outputName="CatalogListAllItemsResponse" inputName="CatalogListAllItems" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="c93dab81-16f6-4c41-accd-4894fd1b13aa" name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8181/cxf/Shopping3000CatalogService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://webservice.flows.lab2.soa1.si5.polytech.unice.fr/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <web:CatalogListAllItems/>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://webservice.flows.lab2.soa1.si5.polytech.unice.fr/Shopping3000CatalogService/CatalogListAllItems"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:testSuite id="d8be9e82-9b77-4f2e-994f-f40455798eca" name="TestSuite"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="c2ffd174-7639-4171-a01b-2f9a4db3f175" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="FullOrder" searchProperties="true"><con:settings/><con:testStep type="properties" name="props" id="ec79f6c8-a0dc-480f-ad93-2e94c526c364"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>order_id</con:name><con:value>3</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="request" name="StartOrder" id="df4f57b4-d28b-49fb-b0f7-4720f818f4ff"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Shopping3000OrderServiceSoapBinding</con:interface><con:operation>start_order</con:operation><con:request name="StartOrder" id="b0c6e2f0-b180-4ab9-b4df-18c9780af42a"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8181/cxf/Shopping3000OrderService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://webservice.flows.lab2.soa1.si5.polytech.unice.fr/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <web:start_order/>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="27e6a316-4147-4db2-8f6d-a11d269c211a"/><con:assertion type="Schema Compliance" id="b8e1d918-939c-454f-93f6-dd71b7b8ac95"><con:configuration/></con:assertion><con:assertion type="SOAP Fault Assertion" id="92e3289c-1ac9-469f-912f-a1656f29876a"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="transfer" name="SaveOrderId" id="f91bffdf-e1de-4c43-97ba-9e3ac33daec6"><con:settings/><con:config xsi:type="con:PropertyTransfersStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:transfers setNullOnMissingSource="false" transferTextContent="true" failOnError="true" ignoreEmpty="false" transferToAll="false" entitize="false" transferChildNodes="false"><con:name>SaveOrderId</con:name><con:sourceType>Response</con:sourceType><con:sourceStep>StartOrder</con:sourceStep><con:sourcePath>//order_id</con:sourcePath><con:targetType>order_id</con:targetType><con:targetStep>props</con:targetStep><con:upgraded>true</con:upgraded></con:transfers></con:config></con:testStep><con:testStep type="request" name="AddItems1" id="5da22eb2-c1df-4248-8645-3c7745119360"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Shopping3000OrderServiceSoapBinding</con:interface><con:operation>add_order_item</con:operation><con:request name="AddItems1" id="6cf507ab-29c7-4da5-b661-92ebb1d59144"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8181/cxf/Shopping3000OrderService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://webservice.flows.lab2.soa1.si5.polytech.unice.fr/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <web:add_order_item>
+         <order_id>${props#order_id}</order_id>
+         <order_item>
+            <manufacturer>${#TestCase#manufacturer1}</manufacturer>
+            <manufacturerId>${#TestCase#ItemId1}</manufacturerId>
+         </order_item>
+         <qty>${#TestCase#qty1}</qty>
+      </web:add_order_item>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="66ceaa5c-9681-47fe-8963-d9ad8e79acd7"/><con:assertion type="Schema Compliance" id="9b4042b3-6e06-43ba-ab37-5cc1931f7c8c"><con:configuration/></con:assertion><con:assertion type="SOAP Fault Assertion" id="baba2345-802a-4d19-a7ba-fcec3565e478"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="AddItem2" id="f7807d6d-51c7-437b-b7ce-661ba7c04034"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Shopping3000OrderServiceSoapBinding</con:interface><con:operation>add_order_item</con:operation><con:request name="AddItem2" id="6cf507ab-29c7-4da5-b661-92ebb1d59144"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8181/cxf/Shopping3000OrderService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://webservice.flows.lab2.soa1.si5.polytech.unice.fr/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <web:add_order_item>
+         <order_id>${props#order_id}</order_id>
+         <order_item>
+            <manufacturer>${#TestCase#manufacturer2}</manufacturer>
+            <manufacturerId>${#TestCase#ItemId2}</manufacturerId>
+         </order_item>
+         <qty>${#TestCase#qty2}</qty>
+      </web:add_order_item>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="66ceaa5c-9681-47fe-8963-d9ad8e79acd7"/><con:assertion type="Schema Compliance" id="9b4042b3-6e06-43ba-ab37-5cc1931f7c8c"><con:configuration/></con:assertion><con:assertion type="SOAP Fault Assertion" id="baba2345-802a-4d19-a7ba-fcec3565e478"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="AddItem3" id="7f0bfb1e-01cd-4d05-8b0d-e3399b16878b"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Shopping3000OrderServiceSoapBinding</con:interface><con:operation>add_order_item</con:operation><con:request name="AddItem3" id="6cf507ab-29c7-4da5-b661-92ebb1d59144"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8181/cxf/Shopping3000OrderService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://webservice.flows.lab2.soa1.si5.polytech.unice.fr/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <web:add_order_item>
+         <order_id>${props#order_id}</order_id>
+         <order_item>
+            <manufacturer>${#TestCase#manufacturer3}</manufacturer>
+            <manufacturerId>${#TestCase#ItemId3}</manufacturerId>
+         </order_item>
+         <qty>${#TestCase#qty3}</qty>
+      </web:add_order_item>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="66ceaa5c-9681-47fe-8963-d9ad8e79acd7"/><con:assertion type="Schema Compliance" id="9b4042b3-6e06-43ba-ab37-5cc1931f7c8c"><con:configuration/></con:assertion><con:assertion type="SOAP Fault Assertion" id="baba2345-802a-4d19-a7ba-fcec3565e478"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="SetCustomer" id="ed6b26f7-4a9c-4335-bc4b-7ac862f4b0e6"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Shopping3000OrderServiceSoapBinding</con:interface><con:operation>set_customer</con:operation><con:request name="SetCustomer" id="7ad479ce-9f24-4bd5-96cb-109fbd3850e5"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8181/cxf/Shopping3000OrderService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://webservice.flows.lab2.soa1.si5.polytech.unice.fr/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <web:set_customer>
+         <order_id>${props#order_id}</order_id>         
+         <customer>
+            <address>
+               <address>${#TestCase#customer_address}</address>
+               <city>${#TestCase#customer_city}</city>
+               <zipcode>${#TestCase#customer_zip}</zipcode>
+            </address>
+            <creditcard>
+               <csc>${#TestCase#customer_csc}</csc>
+               <number>${#TestCase#customer_credit_card}</number>
+               <validity>${#TestCase#customer_card_expire}</validity>
+            </creditcard>
+            <email>${#TestCase#customer_email}</email>
+            <name>${#TestCase#customer_name}</name>
+         </customer>
+      </web:set_customer>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="f7525677-c805-403d-be78-44daaef0469c"/><con:assertion type="Schema Compliance" id="ae5030ae-7ab2-4fe5-b8f2-c20b90e2d1e3"><con:configuration/></con:assertion><con:assertion type="SOAP Fault Assertion" id="9cd767f2-d4e3-4ac5-a170-3f08e03816dd"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="CheckAmount" id="374b0df4-3992-41d4-9fde-cef413332b0b"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Shopping3000OrderServiceSoapBinding</con:interface><con:operation>get_amount</con:operation><con:request name="CheckAmount" id="9cca0715-d459-4abf-a8a1-48d97e5dce64"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8181/cxf/Shopping3000OrderService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://webservice.flows.lab2.soa1.si5.polytech.unice.fr/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <web:get_amount>
+         <order_id>${props#order_id}</order_id>
+      </web:get_amount>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="56e20a85-83a8-4152-9983-57499cd9fb21"/><con:assertion type="Schema Compliance" id="532c6619-daea-4817-aa02-f84263f54577"><con:configuration/></con:assertion><con:assertion type="SOAP Fault Assertion" id="3ba6fdc8-3498-4a79-83e9-284be0c1e471"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="Validate" id="f3f7126d-e147-4f28-b76d-a77a0a21cdcd"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Shopping3000OrderServiceSoapBinding</con:interface><con:operation>validate_order</con:operation><con:request name="Validate" id="17c8aa9b-f105-448b-b94f-7b7bcb4b9368"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8181/cxf/Shopping3000OrderService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://webservice.flows.lab2.soa1.si5.polytech.unice.fr/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <web:validate_order>
+         <order_id>${props#order_id}</order_id>
+      </web:validate_order>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="011ad210-a9f5-4c49-9585-fc2caa730f6b"/><con:assertion type="Schema Compliance" id="727d01eb-1a2b-4288-8aab-de689d2e73a3"><con:configuration/></con:assertion><con:assertion type="SOAP Fault Assertion" id="5364ea6d-da6e-4f86-b5bf-3574e835f234"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties><con:property><con:name>ItemId1</con:name><con:value>1</con:value></con:property><con:property><con:name>itemId2</con:name><con:value>2</con:value></con:property><con:property><con:name>manufacturer1</con:name><con:value>MAXIMEUBLE</con:value></con:property><con:property><con:name>manufacturer2</con:name><con:value>MINIBO</con:value></con:property><con:property><con:name>qty1</con:name><con:value>50</con:value></con:property><con:property><con:name>qty2</con:name><con:value>20</con:value></con:property><con:property><con:name>qty3</con:name><con:value>25</con:value></con:property><con:property><con:name>ItemId3</con:name><con:value>3</con:value></con:property><con:property><con:name>manufacturer3</con:name><con:value>MINIBO</con:value></con:property><con:property><con:name>customer_name</con:name><con:value>Jean Dupond</con:value></con:property><con:property><con:name>customer_email</con:name><con:value>lecapeter@gmail.com</con:value></con:property><con:property><con:name>customer_address</con:name><con:value>123 nice street</con:value></con:property><con:property><con:name>customer_city</con:name><con:value>Nice</con:value></con:property><con:property><con:name>customer_zip</con:name><con:value>06000</con:value></con:property><con:property><con:name>customer_credit_card</con:name><con:value>1234123412341234</con:value></con:property><con:property><con:name>customer_csc</con:name><con:value>122</con:value></con:property><con:property><con:name>customer_card_expire</con:name><con:value>1212</con:value></con:property></con:properties></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:sensitiveInformation/></con:soapui-project>
