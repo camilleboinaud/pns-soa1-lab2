@@ -91,3 +91,21 @@ The provided SoapUI project is connected to the catalog and the order services f
 * a customer may wants to check the amount of cart so he will call getAmount to get the order price (this is not possible before because the transport fees may only be calculated when the customer address is known).
 
 After that, the order is processed and a confirmation email is sent to the email specified in the test case email property.
+
+<br>
+
+## 5. Execution tips...
+
+###### 5.1  CXF error in ServiceMix
+
+If you reach an error like this:
+
+> javax.xml.stream.FactoryConfigurationError: Requested factory com.ctc.wstx.stax.WstxEventFactory cannot be located.
+> ...
+
+We suggest to uninstall cxf feature in servermix and reboot it: 
+
+```
+feature:uninstall cxf
+halt
+```
